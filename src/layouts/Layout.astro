@@ -1,0 +1,73 @@
+---
+import { SEO } from "astro-seo";
+import Footer from "@components/footer.astro";
+import Navbar from "@components/navbar/navbar.astro";
+import "@fontsource-variable/inter/index.css";
+import '@fontsource-variable/bricolage-grotesque';
+
+export interface Props {
+  title: string;
+}
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+
+const resolvedImageWithDomain = new URL(
+  "/opengraph.jpg", // CAMBIO: Asegúrate de crear esta imagen y ponerla en la carpeta `public/`
+  Astro.site
+).toString();
+
+const { title } = Astro.props;
+
+// CAMBIO: Personalizamos el título que aparece en la pestaña del navegador
+const makeTitle = title
+  ? title + " | " + "tictacdicta"
+  : "tictacdicta - Registro Horario Digital para PYMES";
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <SEO
+      title={makeTitle}
+     
+      description="Software de registro de jornada digital para PYMES. Cumple con la ley de 2026 de forma fácil y segura. Gestiona horarios, vacaciones y personal en la nube."
+      canonical={canonicalURL}
+      twitter={{
+        // CAMBIO: Pon aquí tu usuario de Twitter (o bórralo si no tienes)
+        //creator: "@TuUsuarioDeTwitter",
+        //site: "@TuUsuarioDeTwitter",
+        //card: "summary_large_image",
+      }}
+      openGraph={{
+        basic: {
+          url: canonicalURL,
+          type: "website",
+          // CAMBIO: Título para cuando se comparta en redes sociales
+          title: `tictacdicta - El Registro Horario que tu PYME necesita`,
+          image: resolvedImageWithDomain,
+        },
+        image: {
+          // CAMBIO: Texto alternativo para la imagen compartida
+          alt: "Ilustración del sistema de registro horario digital tictacdicta",
+        },
+      }}
+    />
+  </head>
+  <body>
+    <Navbar />
+    <slot />
+    <Footer />
+    
+    <style is:global>
+      /* Mejora la velocidad de carga de imágenes */
+      img {
+        content-visibility: auto;
+      }
+    </style>
+  </body>
+</html>

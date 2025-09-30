@@ -1,0 +1,221 @@
+---
+// src/pages/index.astro
+import Container from "@components/container.astro";
+import PricingCard from "@components/pricing.astro";
+import Link from "@components/ui/link.astro";
+import { Picture } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import heroImage from "assets/tictacdicta hero.png";
+
+// --- DATOS PARA LA SECCIÓN DE PRECIOS ---
+const pricing = [
+  { name: "Plan Estándar", price: { monthly: "15€", annual: "150€" }, period: "/mes", popular: false, features: ["Kiosco de Fichaje","Portal del empleado","Panel administrador","Informes simples","Cumple 100% con la ley","Sin límite de trabajadores"], button: { text: "Empezar Ahora", link: "#contact" }},
+  { name: "Plan Profesional", price: { monthly: "25€", annual: "250€" }, period: "/mes", popular: true, features: ["Todo el plan Estándar","Gestión de Ausencias y Vacaciones","Calendarios Laborales","Informes Avanzados","Soporte Prioritario"], button: { text: "Elegir Profesional", link: "#contact" }},
+  { name: "Asesoría Digital/Completa", price: "A Medida", popular: false, features: ["Todo el Plan Profesional","Asesoría Fiscal, Laboral y Contable (con nuestro socio)","Asesoramiento Digital Personalizado","Soporte Exclusivo","Tu asesoría moderna y completa"], button: { text: "Contactar", link: "#contact" }},
+];
+
+// --- DATOS PARA LA SECCIÓN DE CARACTERÍSTICAS (MODIFICADO) ---
+const features = [
+ { title: "Fichaje Centralizado y Sencillo", description: "Instala nuestra app en una tablet en tu centro de trabajo (o cada trabajador en su smartphone). Tus empleados solo necesitan un PIN personal para fichar. Rápido, intuitivo y sin errores.", icon: "tabler:device-tablet-pin" },
+ { title: "Informes Listos para Inspección", description: "Adelántate a la ley de 2026. Genera con un solo clic informes mensuales válidos legalmente, con geolocalización y listos para cualquier inspección de trabajo.", icon: "tabler:file-analytics" },
+ { title: "Portal del Empleado Autónomo", description: "Cada trabajador tiene su propio acceso para consultar su historial de fichajes, solicitar vacaciones y ver su calendario. Menos preguntas para ti, más autonomía para ellos.", icon: "tabler:user-circle" },
+ { title: "Gestión de Ausencias y Vacaciones", description: "Digitaliza todo el proceso. Recibe, aprueba o rechaza solicitudes de vacaciones y ausencias desde tu panel. El calendario se actualiza automáticamente.", icon: "tabler:calendar-time" },
+ { title: "Acceso Seguro desde la Nube", description: "Toda la información de tu empresa está segura en la nube de Google. Accede a tu panel de control desde cualquier lugar y dispositivo con total tranquilidad.", icon: "tabler:cloud-lock" },
+ { title: "Instalación y Soporte Personalizado", description: "No te dejamos solo. Nos desplazamos a tu negocio en Cádiz o Sevilla, configuramos todo por ti y formamos a tu equipo. Tu tranquilidad es nuestro objetivo.", icon: "tabler:headset" },
+];
+
+// --- DATOS PARA LA SECCIÓN "MÁS SERVICIOS" ---
+const moreServices = [
+    { title: "Gestión Contable e Impuestos", icon: "tabler:calculator" },
+    { title: "Nóminas y Seguros Sociales", icon: "tabler:file-invoice" },
+    { title: "Factura Electrónica", icon: "tabler:file-digit" },
+    { title: "Tramitación de Subvenciones", icon: "tabler:award" },
+    { title: "Creación de Página Web", icon: "tabler:world-www" },
+    { title: "Gestión de Google Business", icon: "tabler:brand-google" },
+    { title: "Soporte de Ofimática", icon: "tabler:help-circle" },
+    { title: "Planes de Negocio", icon: "tabler:chart-line" },
+]
+---
+
+
+<Container>
+
+  <main class="relative text-center overflow-hidden py-24 md:py-32">
+    <div class="absolute inset-0 z-0 opacity-20 pointer-events-none flex items-center justify-end">
+      <Picture src={heroImage} alt="Ilustración decorativa del sistema de registro horario tictacdicta" class="max-w-lg lg:max-w-2xl" widths={[200, 400, 600]} sizes="(max-width: 800px) 100vw, 620px" loading="eager" format="avif"/>
+    </div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4">
+      <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
+       El Registro Horario Digital para tu PYME
+      </h1>
+      <p class="text-lg mt-6 text-slate-600 max-w-2xl mx-auto">
+        Nosotros nos encargamos de todo. Instalamos y configuramos el sistema de registro horario en tu empresa para que cumplas con la ley sin perder un minuto.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <Link href="#pricing">Ver Planes</Link>
+        <Link size="lg" style="outline" rel="noopener" href="https://wa.me/34613139737" class="flex gap-2 items-center justify-center !border-green-500 !text-green-500 hover:!bg-green-500 hover:!text-white" target="_blank">
+          <Icon class="w-5 h-5" name="ic:baseline-whatsapp" /> Contacta por WhatsApp
+        </Link>
+      </div>
+    </div>
+  </main>
+
+  <div class="my-24" id="features">
+    <div class="text-center">
+      <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+        Un servicio completo, no solo un software
+      </h2>
+      <p class="text-lg mt-4 text-slate-600">
+        "tictacdicta" te da el control y la tranquilidad que necesitas para gestionar a tu equipo y cumplir con la normativa.
+      </p>
+    </div>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16">
+      {features.map((item) => (
+        <div class="flex gap-4 items-start">
+          <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0">
+            <Icon class="text-white" name={item.icon} />
+          </div>
+          <div>
+            <h3 class="font-semibold text-lg">{item.title}</h3>
+            <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="my-24" id="proceso">
+    <div class="text-center">
+      <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+        ¿Cómo empezar? 
+      </h2>
+      <p class="text-lg mt-4 text-slate-600 max-w-2xl mx-auto">
+        Olvídate de complejas configuraciones. Nuestro servicio está diseñado para que no tengas que preocuparte por nada.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-10 mt-16 text-center">
+      <div class="flex flex-col items-center"><div class="bg-slate-100 rounded-full p-4"><Icon class="text-black w-10 h-10" name="tabler:phone-call" /></div><h3 class="font-semibold text-xl mt-6">Paso 1: Contactas</h3><p class="text-slate-500 mt-2">Hablamos sin compromiso, entendemos las necesidades de tu negocio y resolvemos todas tus dudas.</p></div>
+      <div class="flex flex-col items-center"><div class="bg-slate-100 rounded-full p-4"><Icon class="text-black w-10 h-10" name="tabler:settings-check" /></div><h3 class="font-semibold text-xl mt-6">Paso 2: Lo Dejamos Todo Listo</h3><p class="text-slate-500 mt-2">Nos desplazamos a tu empresa (o en remoto si prefieres), instalamos la tablet, configuramos los empleados y te formamos a ti y a tu equipo.</p></div>
+      <div class="flex flex-col items-center"><div class="bg-slate-100 rounded-full p-4"><Icon class="text-black w-10 h-10" name="tabler:coffee" /></div><h3 class="font-semibold text-xl mt-6">Paso 3: Disfrutas</h3><p class="text-slate-500 mt-2">Tu sistema funciona desde el primer día. Y si tienes cualquier duda, tienes nuestro soporte personal y directo.</p></div>
+    </div>
+  </div>
+
+  <div class="my-24">
+    <h2 class="text-center text-slate-500">Tecnología Confiable a tu Servicio</h2>
+    <div class="flex gap-8 md:gap-20 items-center justify-center mt-10 flex-wrap">
+      <div class="text-center"><Icon class="size-8 md:size-12 mx-auto" name="logos:google-cloud" /><p class="text-sm mt-2 text-slate-500">Google Cloud</p></div>
+      <div class="text-center"><Icon class="size-8 md:size-12 mx-auto" name="logos:firebase" /><p class="text-sm mt-2 text-slate-500">Firebase</p></div>
+      <div class="text-center"><Icon class="size-8 md:size-12 mx-auto" name="simple-icons:react" /><p class="text-sm mt-2 text-slate-500">React</p></div>
+      <div class="text-center"><Icon class="size-8 md:size-12 mx-auto" name="tabler:brand-android" /><p class="text-sm mt-2 text-slate-500">Android</p></div>
+      <div class="text-center"><Icon class="size-8 md:size-12 mx-auto" name="tabler:brand-apple" /><p class="text-sm mt-2 text-slate-500">iOS</p></div>
+    </div>
+  </div>
+
+  <div id="pricing" class="my-24">
+    <div class="text-center">
+      <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+        Precios Claros y Flexibles
+      </h2>
+      <p class="text-lg mt-4 text-slate-600">
+        Un plan para cada tipo de PYME. Ahorra eligiendo el plan anual.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-screen-lg mt-12">
+      {pricing.map((item) => <PricingCard plan={item} />)}
+    </div>
+    <div class="text-center text-sm text-slate-500 mt-8 space-y-1">
+      <p>* La tablet para el modo Kiosko no está incluida en el precio de los planes.</p>
+      <p>** Precios mostrados sin IVA (21%).</p>
+    </div>
+  </div>
+
+  <div class="my-24">
+      <div class="text-center">
+        <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+          Un Ecosistema de Servicios para tu PYME
+        </h2>
+        <p class="text-lg mt-4 text-slate-600 max-w-3xl mx-auto">
+          Más allá del registro horario, te ofrecemos una gama completa de servicios para ser tu asesoría digital y de gestión de confianza.
+        </p>
+      </div>
+      <div class="grid sm:grid-cols-2 md:grid-cols-4 mt-16 gap-10">
+        {moreServices.map((item) => (
+          <div class="flex flex-col items-center text-center">
+            <div class="bg-slate-100 rounded-full p-3">
+              <Icon class="text-black w-8 h-8" name={item.icon} />
+            </div>
+            <h3 class="font-semibold text-lg mt-4">{item.title}</h3>
+          </div>
+        ))}
+      </div>
+      <p class="text-center text-slate-500 mt-8">
+        Precios de estos servicios bajo presupuesto personalizado.
+      </p>
+  </div>
+  
+  <div id="about" class="my-24">
+    <div class="text-center">
+      <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+        Un proyecto local con una misión clara
+      </h2>
+      <p class="text-lg mt-4 text-slate-600">
+        Con base en Andalucía, ayudamos a las PYMEs de nuestra tierra a digitalizarse.
+      </p>
+    </div>
+    <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-16">
+      <h2 class="font-bold text-3xl text-gray-800 text-center">
+        Simplificando la tecnología para los negocios de aquí.
+      </h2>
+      <p class="text-lg leading-relaxed text-slate-500">
+        "tictacdicta" es un proyecto creado en Cádiz con un objetivo: que la nueva ley de registro horario sea una oportunidad, no un problema. Como desarrollador y emprendedor local, entiendo los retos diarios de una pequeña y mediana empresa. Por eso, mi servicio incluye el acompañamiento físico en la puesta en marcha, asegurando que todo funcione a la perfección desde el primer día. Actualmente ofrecemos nuestros servicios de forma presencial y remota en las provincias de Cádiz y Sevilla.
+      </p>
+    </div>
+  </div>
+  <div class="bg-black p-8 md:px-20 md:py-20 mx-auto max-w-5xl rounded-lg flex flex-col items-center text-center">
+    <h2 class="text-white text-4xl md:text-6xl tracking-tight">
+      No esperes al último momento
+    </h2>
+    <p class="text-slate-400 mt-4 text-lg md:text-xl">
+       Contrata "tictacdicta" ahora y asegura la tranquilidad de tu empresa.
+    </p>
+    <div class="flex mt-5">
+      <Link href="#pricing" style="inverted">Ver Planes</Link>
+    </div>
+  </div>
+  
+  <div id="contact" class="my-24">
+    <div class="text-center">
+      <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+        ¿Hablamos?
+      </h2>
+    </div>
+    <div class="flex justify-center mt-16">
+      <div class="text-center">
+        <h2 class="font-medium text-2xl text-gray-800">Contacta con tictacdicta</h2>
+        <p class="text-lg leading-relaxed text-slate-500 mt-3 max-w-lg mx-auto">
+          ¿Tienes alguna duda o quieres una demo personalizada? Estaremos encantados de atenderte por la vía que prefieras.
+        </p>
+        <div class="mt-8 flex flex-col items-center gap-4">
+          <div class="flex items-center justify-center space-x-2 text-gray-600">
+            <Link size="lg" style="outline" rel="noopener" href="https://wa.me/34613139737" class="flex gap-2 items-center justify-center !border-green-500 !text-green-500 hover:!bg-green-500 hover:!text-white" target="_blank">
+              <Icon class="w-5 h-5" name="ic:baseline-whatsapp" /> Contacta por WhatsApp
+            </Link>
+          </div>
+          <div class="flex items-center justify-center mt-2 space-x-2 text-gray-600">
+            <Icon class="text-gray-400 w-4 h-4" name="uil:envelope" />
+            <a href="mailto:tictacdicta24@gmail.com">contacto@tictacdicta.es</a>
+          </div>
+          <div class="flex items-center justify-center mt-2 space-x-2 text-gray-600">
+            <Icon class="text-gray-400 w-4 h-4" name="uil:phone" />
+            <a href="tel:+34613139737">+34 613 13 97 37</a>
+          </div>
+          <div class="flex items-center justify-center mt-2 space-x-2 text-gray-600">
+            <Icon class="text-gray-400 w-4 h-4" name="uil:map-marker" />
+            <span>Cádiz</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</Container>

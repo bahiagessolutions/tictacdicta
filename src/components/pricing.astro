@@ -1,0 +1,63 @@
+---
+// src/components/pricing.astro
+import { Icon } from "astro-icon/components";
+
+
+const { plan } = Astro.props;
+const { name, price, popular, features, button } = plan;
+
+const hasMonthlyPrice = typeof price === "object" && price.monthly;
+---
+
+<div
+  class:list={[
+    "p-8 border-2 rounded-lg relative flex flex-col h-full",
+    popular ? "border-black" : "border-gray-200",
+  ]}
+>
+  {
+    popular && (
+      <div class="text-sm px-3 py-1 bg-black text-white rounded-full inline-block absolute top-0 -translate-y-1/2">
+        Popular
+      </div>
+    )
+  }
+  <h3 class="text-lg font-semibold">{name}</h3>
+
+  <div class="mt-4">
+    {hasMonthlyPrice ? (
+      <>
+        <div class="flex items-baseline">
+          <span class="text-4xl font-bold tracking-tight">{price.monthly}</span>
+          <span class="ml-1 text-xl font-semibold">{plan.period || "/mes"}</span>
+        </div>
+        <p class="text-sm text-slate-500 mt-1">
+          o {price.annual} facturado anualmente
+        </p>
+      </>
+    ) : (
+      <span class="text-4xl font-bold tracking-tight">{price}</span>
+    )}
+  </div>
+
+  <p class="mt-5 text-slate-500">Incluye:</p>
+  <ul class="mt-6 space-y-4 flex-1">
+    {
+      features.map((feature) => (
+        <li class="flex items-center gap-3">
+          <Icon name="tabler:check" class="w-6 h-6 text-green-500 shrink-0" />
+          <span>{feature}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <a href={button.link}
+    class:list={[
+      "w-full text-center py-3 px-4 rounded-lg mt-8 transition-transform duration-300",
+      popular ? "bg-black text-white hover:scale-105" : "bg-white border-2 border-black text-black hover:bg-gray-100",
+    ]}
+  >
+    {button.text}
+  </a>
+</div>
