@@ -15,17 +15,22 @@
     const banner = document.getElementById('cookie-consent-banner');
     const acceptButton = document.getElementById('accept-cookies');
 
-    // Comprueba si el consentimiento ya fue dado
-    if (!localStorage.getItem('cookie_consent_given')) {
-      // Si no, muestra el banner con una transición
-      banner.classList.remove('translate-y-full');
-    }
+    // --- INICIO DE LA CORRECCIÓN ---
+    // Comprobamos que ambos elementos existen antes de intentar usarlos.
+    if (banner && acceptButton) {
+      // Comprueba si el consentimiento ya fue dado
+      if (!localStorage.getItem('cookie_consent_given')) {
+        // Si no, muestra el banner con una transición
+        banner.classList.remove('translate-y-full');
+      }
 
-    acceptButton.addEventListener('click', () => {
-      // Guarda el consentimiento en el almacenamiento local
-      localStorage.setItem('cookie_consent_given', 'true');
-      // Oculta el banner con una transición
-      banner.classList.add('translate-y-full');
-    });
+      acceptButton.addEventListener('click', () => {
+        // Guarda el consentimiento en el almacenamiento local
+        localStorage.setItem('cookie_consent_given', 'true');
+        // Oculta el banner con una transición
+        banner.classList.add('translate-y-full');
+      });
+    }
+    // --- FIN DE LA CORRECCIÓN ---
   });
 </script>
