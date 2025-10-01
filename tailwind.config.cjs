@@ -1,18 +1,19 @@
+// tailwind.config.mjs
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require("tailwindcss/defaultTheme");
-module.exports = {
+export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      colors: {
+        "brand-blue": "#0071DC",
+        "brand-blue-dark": "#0E2841",
+        "brand-green": "#9BE815",
+      },
       fontFamily: {
-        sans: [
-          "Bricolage Grotesque Variable",
-          "Inter Variable",
-          "Inter",
-          ...defaultTheme.fontFamily.sans,
-        ],
+        sans: ["Inter Variable", "sans-serif"],
+        heading: ["Bricolage Grotesque Variable", "sans-serif"],
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [],
 };
