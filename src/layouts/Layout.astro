@@ -2,6 +2,7 @@
 import { SEO } from "astro-seo";
 import Footer from "@components/footer.astro";
 import Navbar from "@components/navbar/navbar.astro";
+import CookieConsent from "@components/CookieConsent.astro";
 import "@fontsource-variable/inter/index.css";
 import '@fontsource-variable/bricolage-grotesque';
 
@@ -62,7 +63,7 @@ const makeTitle = title
     <Navbar />
     <slot />
     <Footer />
-    
+    <CookieConsent />
     <style is:global>
       /* Mejora la velocidad de carga de imágenes */
       img {

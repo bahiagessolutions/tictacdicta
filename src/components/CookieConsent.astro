@@ -1,0 +1,31 @@
+---
+// src/components/CookieConsent.astro
+---
+<div id="cookie-consent-banner" class="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 flex flex-col sm:flex-row items-center justify-center gap-4 text-sm z-50 transition-transform duration-500 translate-y-full">
+  <p class="text-center sm:text-left">
+    Utilizamos cookies esenciales para el funcionamiento del sitio y para mejorar tu experiencia. Al continuar, aceptas nuestro uso de cookies.
+  </p>
+  <button id="accept-cookies" class="bg-white text-gray-900 font-bold py-2 px-4 rounded-lg shrink-0">
+    Aceptar
+  </button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('cookie-consent-banner');
+    const acceptButton = document.getElementById('accept-cookies');
+
+    // Comprueba si el consentimiento ya fue dado
+    if (!localStorage.getItem('cookie_consent_given')) {
+      // Si no, muestra el banner con una transición
+      banner.classList.remove('translate-y-full');
+    }
+
+    acceptButton.addEventListener('click', () => {
+      // Guarda el consentimiento en el almacenamiento local
+      localStorage.setItem('cookie_consent_given', 'true');
+      // Oculta el banner con una transición
+      banner.classList.add('translate-y-full');
+    });
+  });
+</script>
