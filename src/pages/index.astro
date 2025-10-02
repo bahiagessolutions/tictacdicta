@@ -1,18 +1,176 @@
 ---
-import Container from "@components/container.astro";
-import Cta from "@components/cta.astro";
-import Features from "@components/features.astro";
-import Hero from "@components/hero.astro";
-import Logos from "@components/logos.astro";
+// src/pages/index.astro
 import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import PricingCard from "@components/pricing.astro";
+// Ya no usamos el componente Link, usamos <a> estándar
+import { Picture } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import heroImage from "assets/tictacdicta hero.png";
+
+// --- DATOS PARA LA SECCIÓN DE PRECIOS ---
+const pricing = [
+  { name: "Plan Estándar", price: { monthly: "15€", annual: "150€" }, period: "/mes", popular: false, features: ["Kiosco de Fichaje","Portal del empleado","Panel administrador","Informes simples","Cumple 100% con la ley","Sin límite de trabajadores"], button: { text: "Elige Estándar", link: "https://wa.me/34613139737?text=Hola%21%20estoy%20interesado%20en%20conocer%20m%C3%A1s%20informaci%C3%B3n%20del%20Plan%20Est%C3%A1ndar."  }},
+  { name: "Plan Profesional", price: { monthly: "25€", annual: "250€" }, period: "/mes", popular: true, features: ["Todo el plan Estándar","Gestión de Ausencias y Vacaciones","Calendarios Laborales","Informes Avanzados","Soporte Prioritario"], button: { text: "Elige Profesional", link: "https://wa.me/34613139737?text=Hola%21%20estoy%20interesado%20en%20conocer%20m%C3%A1s%20informaci%C3%B3n%20del%20Plan%20Profesional."  }},
+  { name: "Asesoría Digital/Completa", price: "A Medida", popular: false, features: ["Todo el Plan Profesional","Asesoría Fiscal, Laboral y Contable (con nuestro socio)","Asesoramiento Digital Personalizado","Soporte Exclusivo","Tu asesoría moderna y completa"], button: { text: "Elige a medida", link: "https://wa.me/34613139737?text=Hola%21%20estoy%20interesado%20en%20conocer%20m%C3%A1s%20informaci%C3%B3n%20del%20plan%20de%20Asesor%C3%ADa%20Digital."  }},
+];
+
+// --- DATOS PARA LA SECCIÓN DE CARACTERÍSTICAS ---
+const features = [
+ { title: "Fichaje Centralizado y Sencillo", description: "Instalamos nuestra app en una tablet en tu centro de trabajo (o en el smartphone de cada trabajador). Rápido, intuitivo y sin errores.", icon: "tabler:device-tablet-pin" },
+ { title: "Informes Listos para Inspección", description: "Adelántate a la ley. Genera informes mensuales válidos legalmente, con geolocalización y listos para cualquier inspección.", icon: "tabler:file-analytics" },
+ { title: "Portal del Empleado", description: "Cada trabajador tiene su propio acceso para consultar sus fichajes, solicitar vacaciones y ver su calendario. Menos preguntas para ti.", icon: "tabler:user-circle" },
+ { title: "Gestión de Ausencias", description: "Digitaliza todo el proceso. Recibe, aprueba o rechaza solicitudes de vacaciones y ausencias desde tu panel.", icon: "tabler:calendar-time" },
+ { title: "Acceso Seguro en la Nube", description: "Toda tu información está segura en la nube de Google. Accede a tu panel desde cualquier lugar y dispositivo con tranquilidad.", icon: "tabler:cloud-lock" },
+ { title: "Instalación y Soporte Personalizado", description: "No te dejamos solo. Configuramos todo por ti y formamos a tu equipo. Tu tranquilidad es nuestro objetivo.", icon: "tabler:headset" },
+];
+
 ---
 
 <Layout title="tictacdicta - Registro Horario Digital para PYMES">
   <Container>
-    <Hero />
-    <Features />
-    <Logos />
-    <Cta />
+
+    <main class="relative text-center overflow-hidden py-20 md:py-28">
+      <div class="absolute inset-0 z-0 opacity-10 pointer-events-none flex items-center justify-end">
+        <Picture src={heroImage} alt="Ilustración decorativa" class="max-w-lg lg:max-w-2xl" widths={[400, 600]} sizes="600px" loading="eager" format="avif"/>
+      </div>
+      <div class="relative z-10 max-w-4xl mx-auto px-4">
+        <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-brand-blue-dark">
+          El Registro Horario Digital, <span class="text-brand-blue">hecho fácil</span> para tu PYME.
+        </h1>
+        <p class="text-lg md:text-xl mt-6 text-slate-600 max-w-2xl mx-auto">
+          Nos encargamos de todo. Instalamos y configuramos el sistema en tu empresa para que cumplas con la ley sin perder un minuto.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#pricing" class="inline-block px-6 py-3 text-lg font-semibold rounded-lg bg-brand-blue hover:bg-brand-blue/90 text-white transition-colors">
+            Ver Planes
+          </a>
+          <a 
+            href="https://wa.me/34613139737" 
+            target="_blank" 
+            rel="noopener" 
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-lg border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-colors">
+            <Icon class="w-5 h-5" name="ic:baseline-whatsapp" /> Contacta por WhatsApp
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <div class="my-16 md:my-24" id="features">
+      <div class="text-center max-w-3xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark">
+          Un servicio completo, no solo un software
+        </h2>
+        <p class="text-lg mt-4 text-slate-600">
+          Te damos el control y la tranquilidad que necesitas para gestionar a tu equipo y cumplir con la normativa.
+        </p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 mt-16 gap-x-8 gap-y-12">
+        {features.map((item) => (
+          <div class="flex gap-4 items-start">
+            <div class="mt-1 bg-brand-blue text-white rounded-lg p-2 shrink-0">
+              <Icon class="w-6 h-6" name={item.icon} />
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg text-brand-blue-dark">{item.title}</h3>
+              <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="my-16 md:my-24 py-16 md:py-24 bg-slate-50 rounded-lg" id="proceso">
+      <div class="text-center max-w-3xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark">
+          ¿Cómo Empezar?
+        </h2>
+        <p class="text-lg mt-4 text-slate-600">
+          Nuestro servicio "llave en mano" está diseñado para que no te preocupes por nada.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-10 mt-16 text-center">
+        <div class="flex flex-col items-center">
+            <div class="bg-brand-blue text-white rounded-full p-4 flex items-center justify-center w-16 h-16 text-2xl font-bold">1</div>
+            <h3 class="font-semibold text-xl mt-6 text-brand-blue-dark">Contactas</h3>
+            <p class="text-slate-500 mt-2">Hablamos sin compromiso, entendemos tus necesidades y resolvemos todas tus dudas.</p>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="bg-brand-blue text-white rounded-full p-4 flex items-center justify-center w-16 h-16 text-2xl font-bold">2</div>
+            <h3 class="font-semibold text-xl mt-6 text-brand-blue-dark">Lo Dejamos Todo Listo</h3>
+            <p class="text-slate-500 mt-2">Nos desplazamos a tu empresa (o en remoto), instalamos, configuramos y formamos a tu equipo.</p>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="bg-brand-blue text-white rounded-full p-4 flex items-center justify-center w-16 h-16 text-2xl font-bold">3</div>
+            <h3 class="font-semibold text-xl mt-6 text-brand-blue-dark">Disfrutas</h3>
+            <p class="text-slate-500 mt-2">Tu sistema funciona desde el primer día. Y si tienes cualquier duda, tienes nuestro soporte personal y directo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="pricing" class="my-16 md:my-24">
+      <div class="text-center max-w-3xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark">
+          Precios Claros y Flexibles
+        </h2>
+        <p class="text-lg mt-4 text-slate-600">
+          Un plan para cada tipo de PYME. Ahorra eligiendo el plan anual.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8 mx-auto max-w-screen-lg mt-16">
+        {pricing.map((item) => <PricingCard plan={item} />)}
+      </div>
+      <div class="text-center text-sm text-slate-500 mt-8 space-y-1">
+        <p>* La tablet para el modo Kiosko no está incluida en el precio de los planes.</p>
+        <p>** Precios mostrados sin IVA (21%).</p>
+      </div>
+    </div>
+    
+    <div class="bg-brand-blue-dark p-8 md:px-16 md:py-16 mx-auto max-w-5xl rounded-lg flex flex-col items-center text-center">
+      <h2 class="text-white text-3xl md:text-4xl font-bold">
+        Adelántate a 2026.
+      </h2>
+      <p class="text-slate-300 mt-4 text-lg">
+        No esperes al último momento. Implementa "tictacdicta" ahora y asegura la tranquilidad de tu empresa.
+      </p>
+      <div class="flex mt-8">
+        <a href="#pricing" class="inline-block px-6 py-3 text-lg font-semibold rounded-lg bg-white text-brand-blue-dark hover:bg-gray-200 transition-colors">
+          Ver Planes
+        </a>
+      </div>
+    </div>
+
+    <div id="contact" class="my-16 md:my-24">
+      <div class="text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark">
+          ¿Hablamos?
+        </h2>
+      </div>
+      <div class="flex justify-center mt-12">
+        <div class="text-center">
+          <h3 class="font-medium text-2xl text-brand-blue-dark">Contacta con tictacdicta</h3>
+          <p class="text-lg leading-relaxed text-slate-500 mt-3 max-w-lg mx-auto">
+            ¿Tienes alguna duda o quieres una demo personalizada? Estaremos encantados de atenderte por la vía que prefieras.
+          </p>
+          <div class="mt-8 flex flex-col items-center gap-4">
+            <div class="flex items-center justify-center">
+              <a href="https://wa.me/34613139737" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-lg border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-colors">
+                <Icon class="w-5 h-5" name="ic:baseline-whatsapp" /> Contacta por WhatsApp
+              </a>
+            </div>
+            <div class="flex items-center justify-center mt-2 space-x-2 text-gray-600">
+              <Icon class="w-4 h-4" name="uil:envelope" />
+              <a href="mailto:contacto@tictacdicta.es" class="hover:text-brand-blue">contacto@tictacdicta.es</a>
+            </div>
+            <div class="flex items-center justify-center mt-2 space-x-2 text-gray-600">
+              <Icon class="w-4 h-4" name="uil:phone" />
+              <a href="tel:+34613139737" class="hover:text-brand-blue">+34 613 13 97 37</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </Container>
 </Layout>
 
