@@ -2,6 +2,9 @@
 // src/components/pricing.astro
 import { Icon } from "astro-icon/components";
 
+export interface Props {
+  plan: any;
+}
 
 const { plan } = Astro.props;
 const { name, price, popular, features, button } = plan;
@@ -11,14 +14,16 @@ const hasMonthlyPrice = typeof price === "object" && price.monthly;
 
 <div
   class:list={[
-    "p-8 border-2 rounded-lg relative flex flex-col h-full",
-    popular ? "border-black" : "border-gray-200",
+    "p-8 rounded-lg relative flex flex-col h-full border",
+    popular 
+      ? "bg-brand-blue text-white border-brand-blue" 
+      : "bg-slate-50 border-slate-200",
   ]}
 >
   {
     popular && (
-      <div class="text-sm px-3 py-1 bg-black text-white rounded-full inline-block absolute top-0 -translate-y-1/2">
-        Popular
+      <div class="text-sm px-3 py-1 bg-brand-green text-brand-blue-dark font-bold rounded-full inline-block absolute top-0 -translate-y-1/2">
+        MÁS POPULAR
       </div>
     )
   }
@@ -29,9 +34,9 @@ const hasMonthlyPrice = typeof price === "object" && price.monthly;
       <>
         <div class="flex items-baseline">
           <span class="text-4xl font-bold tracking-tight">{price.monthly}</span>
-          <span class="ml-1 text-xl font-semibold">{plan.period || "/mes"}</span>
+          <span class:list={["ml-1 text-xl font-semibold", popular ? "text-slate-200" : "text-slate-500"]}>{plan.period || "/mes"}</span>
         </div>
-        <p class="text-sm text-slate-500 mt-1">
+        <p class:list={["text-sm mt-1", popular ? "text-slate-300" : "text-slate-500"]}>
           o {price.annual} facturado anualmente
         </p>
       </>
@@ -40,12 +45,12 @@ const hasMonthlyPrice = typeof price === "object" && price.monthly;
     )}
   </div>
 
-  <p class="mt-5 text-slate-500">Incluye:</p>
+  <p class:list={["mt-5", popular ? "text-slate-300" : "text-slate-500"]}>Incluye:</p>
   <ul class="mt-6 space-y-4 flex-1">
     {
       features.map((feature) => (
         <li class="flex items-center gap-3">
-          <Icon name="tabler:check" class="w-6 h-6 text-green-500 shrink-0" />
+          <Icon name="tabler:check" class:list={["w-6 h-6 shrink-0", popular ? "text-brand-green" : "text-brand-blue"]} />
           <span>{feature}</span>
         </li>
       ))
@@ -57,8 +62,10 @@ const hasMonthlyPrice = typeof price === "object" && price.monthly;
     target="_blank"
     rel="noopener"
     class:list={[
-      "w-full text-center py-3 px-4 rounded-lg mt-8 transition-transform duration-300",
-      popular ? "bg-brand-blue text-white hover:scale-105" : "bg-white border-2 border-black text-black hover:bg-gray-100",
+      "w-full text-center py-3 px-4 rounded-lg mt-8 font-bold transition-transform duration-300 hover:scale-105",
+      popular 
+        ? "bg-white text-brand-blue" 
+        : "bg-white border-2 border-brand-blue text-brand-blue hover:bg-slate-100",
     ]}
   >
     {button.text}
