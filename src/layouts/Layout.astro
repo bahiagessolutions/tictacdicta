@@ -49,6 +49,32 @@ const makeTitle = title
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=862776369771257&ev=PageView&noscript=1"/></noscript>
     <!-- End Meta Pixel Code -->
 
+    <!-- Google tag (gtag.js) - Google Ads -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17724156349" is:inline></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17724156349');
+    </script>
+
+    <!-- Event snippet for Contacto conversion page (Google Ads) -->
+    <script is:inline>
+      function gtag_report_conversion(url) {
+        var callback = function () {
+          if (typeof(url) != 'undefined') {
+            window.location = url;
+          }
+        };
+        gtag('event', 'conversion', {
+          'send_to': 'AW-17724156349/b9WnCKWt80bEL3TxINC',
+          'event_callback': callback
+        });
+        return false;
+      }
+    </script>
+    <!-- End Google Ads Conversion Event -->
+
     <SEO
       title={makeTitle}
      

@@ -598,7 +598,7 @@ const faqs = [
   <!-- Espacio extra en móvil para el sticky footer -->
   <div class="h-24 md:hidden"></div>
 
-  <!-- Script para tracking de Meta Pixel en botones de WhatsApp -->
+  <!-- Script para tracking de Meta Pixel y Google Ads en botones de WhatsApp -->
   <script is:inline>
     document.addEventListener('DOMContentLoaded', function() {
       // Seleccionar todos los botones de WhatsApp por la clase
@@ -609,6 +609,10 @@ const faqs = [
           // Disparar evento Contact de Meta Pixel
           if (typeof fbq !== 'undefined') {
             fbq('track', 'Contact');
+          }
+          // Disparar evento de conversión de Google Ads
+          if (typeof gtag_report_conversion !== 'undefined') {
+            gtag_report_conversion();
           }
         });
       });
