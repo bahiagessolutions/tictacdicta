@@ -2,21 +2,24 @@
 import Container from "@components/container.astro";
 import Link from "@components/ui/link.astro";
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
+import { Icon } from "astro-icon/components";
 
 const menuitems = [
   {
-    title: "Características",
-    path: "/#features",
-
+    title: "Funcionalidades",
+    path: "/#funcionalidades",
   },
   {
-    title: "Precio",
-    path: "/#pricing",
+    title: "Módulos",
+    path: "/#modulos",
   },
   {
-    title: "Contrátanos",
-    badge: true,
-    path: "/#contact",
+    title: "Precios",
+    path: "/#precios",
+  },
+  {
+    title: "Contacto",
+    path: "/#contacto",
   },
 ];
 ---
@@ -35,34 +38,35 @@ const menuitems = [
       <MenuItems class="hidden w-full lg:w-auto mt-2 lg:flex lg:mt-0">
         <ul class="flex flex-col lg:flex-row lg:gap-3">
           {
-            menuitems.map((item, index) => (
-              <>
-                {(
-                  <li>
-                    <a
-                      href={item.path}
-                      class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900">
-                      <span> {item.title}</span>
-                      {item.badge && (
-                        <span class="ml-1 px-2 py-0.5 text-[10px] animate-pulse font-semibold uppercase text-white bg-indigo-600 rounded-full">
-                          ¡Ahorra al contratar un año!
-                        </span>
-                      )}
-                    </a>
-                  </li>
-                )}
-              </>
+            menuitems.map((item) => (
+              <li>
+                <a
+                  href={item.path}
+                  class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900 transition-colors">
+                  <span>{item.title}</span>
+                </a>
+              </li>
             ))
           }
         </ul>
         <div class="lg:hidden flex items-center mt-3 gap-4">
-          <Link href="#contact" size="md" block>Contacto</Link>
+          <a 
+            href="https://wa.me/34613139737?text=Hola%21%20Quiero%20probar%20tictacdicta%20GRATIS" 
+            class="wa-contact flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-bold rounded-lg bg-gradient-to-r from-lime-500 to-green-500 text-slate-900">
+            <Icon name="ic:baseline-whatsapp" class="w-4 h-4" />
+            Prueba Gratis
+          </a>
         </div>
       </MenuItems>
     </Astronav>
     <div>
       <div class="hidden lg:flex items-center gap-4">
-        <Link href="#contact" size="md">Contacto</Link>
+        <a 
+          href="https://wa.me/34613139737?text=Hola%21%20Quiero%20probar%20tictacdicta%20GRATIS" 
+          class="wa-contact flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-lg bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-400 hover:to-green-400 text-slate-900 transition-all hover:scale-105 shadow-md hover:shadow-lg">
+          <Icon name="ic:baseline-whatsapp" class="w-5 h-5" />
+          Prueba Gratis
+        </a>
       </div>
     </div>
   </header>

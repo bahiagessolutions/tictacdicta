@@ -1,0 +1,324 @@
+---
+// src/components/PricingCalculator.astro
+// Calculadora interactiva de precios para tictacdicta
+import { Icon } from "astro-icon/components";
+---
+
+<div class="pricing-calculator bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-slate-200">
+  <div class="text-center mb-10">
+    <h3 class="text-2xl md:text-3xl font-black text-slate-900 mb-3">
+      Calcula tu precio en segundos
+    </h3>
+    <p class="text-slate-600">Personaliza tu plan según tus necesidades</p>
+  </div>
+
+  <!-- Selector de empleados -->
+  <div class="mb-10">
+    <label class="block text-lg font-bold text-slate-900 mb-4">
+      <Icon name="tabler:users" class="w-5 h-5 inline-block mr-2 text-blue-600" />
+      ¿Cuántos empleados tienes?
+    </label>
+    <div class="flex items-center gap-6">
+      <input 
+        type="range" 
+        id="employeeSlider" 
+        min="1" 
+        max="50" 
+        value="5" 
+        class="flex-1 h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+      />
+      <div class="flex items-center gap-2">
+        <input 
+          type="number" 
+          id="employeeInput" 
+          min="1" 
+          max="999" 
+          value="5" 
+          class="w-20 px-3 py-2 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-blue-600 focus:outline-none"
+        />
+        <span class="text-slate-600 font-medium">empleados</span>
+      </div>
+    </div>
+    <!-- Precio base visual -->
+    <div class="mt-4 p-4 bg-blue-50 rounded-xl">
+      <div class="flex justify-between items-center">
+        <span class="text-slate-700">Precio base anual:</span>
+        <span id="basePriceDisplay" class="text-2xl font-black text-blue-600">100€</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Módulos opcionales -->
+  <div class="mb-10">
+    <label class="block text-lg font-bold text-slate-900 mb-4">
+      <Icon name="tabler:puzzle" class="w-5 h-5 inline-block mr-2 text-purple-600" />
+      Módulos opcionales
+    </label>
+    
+    <div class="grid sm:grid-cols-2 gap-4">
+      <!-- Ausencias - Gratis -->
+      <label class="module-card relative flex items-start gap-4 p-4 bg-slate-50 rounded-xl border-2 border-slate-200 cursor-pointer hover:border-green-400 transition-colors has-[:checked]:border-green-500 has-[:checked]:bg-green-50">
+        <input type="checkbox" id="moduleAusencias" class="mt-1 w-5 h-5 accent-green-600" />
+        <div class="flex-1">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900">📋 Ausencias</span>
+            <span class="text-sm font-bold text-green-600 bg-green-100 px-2 py-1 rounded-full">GRATIS</span>
+          </div>
+          <p class="text-sm text-slate-500 mt-1">Vacaciones, permisos y bajas</p>
+        </div>
+      </label>
+
+      <!-- Geolocalización - Gratis -->
+      <label class="module-card relative flex items-start gap-4 p-4 bg-slate-50 rounded-xl border-2 border-slate-200 cursor-pointer hover:border-green-400 transition-colors has-[:checked]:border-green-500 has-[:checked]:bg-green-50">
+        <input type="checkbox" id="moduleGeo" class="mt-1 w-5 h-5 accent-green-600" />
+        <div class="flex-1">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900">📍 Geolocalización</span>
+            <span class="text-sm font-bold text-green-600 bg-green-100 px-2 py-1 rounded-full">GRATIS</span>
+          </div>
+          <p class="text-sm text-slate-500 mt-1">GPS al fichar para trabajo remoto</p>
+        </div>
+      </label>
+
+      <!-- Circulares - 20€/año -->
+      <label class="module-card relative flex items-start gap-4 p-4 bg-slate-50 rounded-xl border-2 border-slate-200 cursor-pointer hover:border-amber-400 transition-colors has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50">
+        <input type="checkbox" id="moduleCirculares" class="mt-1 w-5 h-5 accent-amber-600" />
+        <div class="flex-1">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900">📢 Circulares</span>
+            <span class="text-sm font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded-full">+20€/año</span>
+          </div>
+          <p class="text-sm text-slate-500 mt-1">Comunicados internos a empleados</p>
+        </div>
+      </label>
+
+      <!-- Documentos - Variable -->
+      <label class="module-card relative flex items-start gap-4 p-4 bg-slate-50 rounded-xl border-2 border-slate-200 cursor-pointer hover:border-purple-400 transition-colors has-[:checked]:border-purple-500 has-[:checked]:bg-purple-50">
+        <input type="checkbox" id="moduleDocumentos" class="mt-1 w-5 h-5 accent-purple-600" />
+        <div class="flex-1">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900">📄 Documentos</span>
+            <span id="documentosPriceTag" class="text-sm font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded-full">+50€/año</span>
+          </div>
+          <p class="text-sm text-slate-500 mt-1">Nóminas y certificados por empleado</p>
+          <p class="text-xs text-slate-400 mt-1">50€ (≤5 emp.) / 100€ (>5 emp.)</p>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Resumen de precio -->
+  <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 md:p-8 text-white mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div>
+        <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">Precio total anual</p>
+        <div class="flex items-baseline gap-2">
+          <span id="totalPrice" class="text-5xl md:text-6xl font-black text-lime-400">100</span>
+          <span class="text-2xl text-slate-300">€/año</span>
+        </div>
+        <p class="text-slate-400 text-sm mt-2">
+          Equivale a <span id="monthlyPrice" class="text-white font-bold">8,33€</span>/mes
+        </p>
+      </div>
+      <div id="priceBreakdown" class="text-sm text-slate-300 space-y-1 md:text-right">
+        <p>Base: <span id="breakdownBase">100€</span></p>
+        <!-- Se añadirán dinámicamente los módulos -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón de WhatsApp -->
+  <a 
+    id="whatsappBtn"
+    href="#" 
+    target="_blank"
+    rel="noopener"
+    class="wa-contact group flex items-center justify-center gap-3 w-full py-5 text-xl font-black rounded-2xl bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-400 hover:to-green-400 text-slate-900 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(132,204,22,0.4)]"
+  >
+    <Icon name="ic:baseline-whatsapp" class="w-7 h-7" />
+    <span>CONTRATAR AHORA</span>
+  </a>
+
+  <p class="text-center text-slate-500 text-sm mt-4">
+    30 días de prueba gratis · Sin permanencia · Precios sin IVA
+  </p>
+</div>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', function() {
+  // Elementos del DOM
+  const employeeSlider = document.getElementById('employeeSlider');
+  const employeeInput = document.getElementById('employeeInput');
+  const basePriceDisplay = document.getElementById('basePriceDisplay');
+  const totalPriceEl = document.getElementById('totalPrice');
+  const monthlyPriceEl = document.getElementById('monthlyPrice');
+  const breakdownBaseEl = document.getElementById('breakdownBase');
+  const priceBreakdownEl = document.getElementById('priceBreakdown');
+  const documentosPriceTag = document.getElementById('documentosPriceTag');
+  const whatsappBtn = document.getElementById('whatsappBtn');
+
+  // Checkboxes de módulos
+  const moduleAusencias = document.getElementById('moduleAusencias');
+  const moduleGeo = document.getElementById('moduleGeo');
+  const moduleCirculares = document.getElementById('moduleCirculares');
+  const moduleDocumentos = document.getElementById('moduleDocumentos');
+
+  // Función para calcular precio base según empleados
+  function getBasePrice(employees) {
+    if (employees === 1) return 50;
+    if (employees === 2) return 75;
+    if (employees >= 3 && employees <= 5) return 100;
+    if (employees >= 6 && employees <= 10) return 125;
+    if (employees >= 11 && employees <= 15) return 150;
+    // Más de 15: 150€ + 5€ por cada empleado adicional
+    return 150 + (employees - 15) * 5;
+  }
+
+  // Función para calcular precio del módulo documentos
+  function getDocumentosPrice(employees) {
+    return employees <= 5 ? 50 : 100;
+  }
+
+  // Función principal para actualizar todo
+  function updatePricing() {
+    const employees = parseInt(employeeInput.value) || 1;
+    
+    // Calcular precio base
+    const basePrice = getBasePrice(employees);
+    basePriceDisplay.textContent = basePrice + '€';
+    breakdownBaseEl.textContent = basePrice + '€';
+
+    // Actualizar etiqueta del módulo documentos
+    const docPrice = getDocumentosPrice(employees);
+    documentosPriceTag.textContent = '+' + docPrice + '€/año';
+
+    // Calcular módulos
+    let modulesTotal = 0;
+    let modulesSelected = [];
+
+    if (moduleAusencias.checked) {
+      modulesSelected.push('Ausencias (gratis)');
+    }
+    if (moduleGeo.checked) {
+      modulesSelected.push('Geolocalización (gratis)');
+    }
+    if (moduleCirculares.checked) {
+      modulesTotal += 20;
+      modulesSelected.push('Circulares (+20€)');
+    }
+    if (moduleDocumentos.checked) {
+      modulesTotal += docPrice;
+      modulesSelected.push('Documentos (+' + docPrice + '€)');
+    }
+
+    // Calcular total
+    const total = basePrice + modulesTotal;
+    const monthly = (total / 12).toFixed(2).replace('.', ',');
+
+    totalPriceEl.textContent = total;
+    monthlyPriceEl.textContent = monthly + '€';
+
+    // Actualizar breakdown
+    let breakdownHTML = '<p>Base (' + employees + ' emp.): <span class="text-white">' + basePrice + '€</span></p>';
+    if (moduleCirculares.checked) {
+      breakdownHTML += '<p>Circulares: <span class="text-white">+20€</span></p>';
+    }
+    if (moduleDocumentos.checked) {
+      breakdownHTML += '<p>Documentos: <span class="text-white">+' + docPrice + '€</span></p>';
+    }
+    if (moduleAusencias.checked) {
+      breakdownHTML += '<p>Ausencias: <span class="text-lime-400">Gratis</span></p>';
+    }
+    if (moduleGeo.checked) {
+      breakdownHTML += '<p>Geolocalización: <span class="text-lime-400">Gratis</span></p>';
+    }
+    priceBreakdownEl.innerHTML = breakdownHTML;
+
+    // Actualizar enlace de WhatsApp
+    let mensaje = '¡Hola! Quiero contratar tictacdicta.\n\n';
+    mensaje += '📊 *Mi configuración:*\n';
+    mensaje += '• Empleados: ' + employees + '\n';
+    mensaje += '• Precio base: ' + basePrice + '€/año\n';
+    
+    if (modulesSelected.length > 0) {
+      mensaje += '\n📦 *Módulos seleccionados:*\n';
+      modulesSelected.forEach(function(mod) {
+        mensaje += '• ' + mod + '\n';
+      });
+    }
+    
+    mensaje += '\n💰 *TOTAL: ' + total + '€/año* (sin IVA)\n';
+    mensaje += '(equivale a ' + monthly + '€/mes)\n';
+    mensaje += '\n¿Podemos empezar con la prueba gratuita de 30 días?';
+
+    const encodedMessage = encodeURIComponent(mensaje);
+    whatsappBtn.href = 'https://wa.me/34613139737?text=' + encodedMessage;
+  }
+
+  // Sincronizar slider e input
+  employeeSlider.addEventListener('input', function() {
+    employeeInput.value = this.value;
+    updatePricing();
+  });
+
+  employeeInput.addEventListener('input', function() {
+    let val = parseInt(this.value) || 1;
+    if (val < 1) val = 1;
+    if (val > 999) val = 999;
+    this.value = val;
+    if (val <= 50) {
+      employeeSlider.value = val;
+    } else {
+      employeeSlider.value = 50;
+    }
+    updatePricing();
+  });
+
+  // Event listeners para módulos
+  [moduleAusencias, moduleGeo, moduleCirculares, moduleDocumentos].forEach(function(checkbox) {
+    checkbox.addEventListener('change', updatePricing);
+  });
+
+  // Inicializar
+  updatePricing();
+});
+</script>
+
+<style>
+  /* Estilos personalizados para el slider */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+    transition: transform 0.2s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+  }
+
+  /* Animación para el precio */
+  #totalPrice {
+    transition: all 0.3s ease;
+  }
+
+  /* Focus states */
+  input[type="number"]:focus {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  }
+</style>

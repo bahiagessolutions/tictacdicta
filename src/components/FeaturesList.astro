@@ -1,0 +1,361 @@
+---
+// src/components/FeaturesList.astro
+// Componente de funcionalidades con pestañas interactivas
+import { Icon } from "astro-icon/components";
+
+// Datos para Administradores
+const adminFeatures = [
+  {
+    title: "Panel de Control Intuitivo",
+    icon: "tabler:dashboard",
+    color: "blue",
+    items: [
+      "Dashboard con resumen del día: quién ha fichado, ausencias, alertas",
+      "Calendario visual de ausencias del equipo",
+      "Notificaciones de solicitudes pendientes en tiempo real"
+    ]
+  },
+  {
+    title: "Gestión Completa de Fichajes",
+    icon: "tabler:list-check",
+    color: "green",
+    items: [
+      "Visualización con filtros avanzados (empleado, fecha, modalidad)",
+      "Añadir fichajes manualmente con justificación",
+      "Anular fichajes incorrectos",
+      "Aprobar o rechazar solicitudes de empleados",
+      "Exportación a Excel"
+    ]
+  },
+  {
+    title: "Control de Empleados",
+    icon: "tabler:users-group",
+    color: "purple",
+    items: [
+      "Alta de empleados con wizard paso a paso",
+      "Asignación de contratos y horarios",
+      "Gestión de PIN para fichaje en kiosco",
+      "Historial completo por empleado"
+    ]
+  },
+  {
+    title: "Informes y Análisis",
+    icon: "tabler:chart-bar",
+    color: "amber",
+    items: [
+      "Informe mensual de horas trabajadas",
+      "Comparativa horas contratadas vs trabajadas",
+      "Saldo de horas (a favor/en contra) por empleado",
+      "Historial de ajustes manuales"
+    ]
+  },
+  {
+    title: "Configuración de Horarios",
+    icon: "tabler:calendar-cog",
+    color: "rose",
+    items: [
+      "Gestión de contratos (jornada completa, parcial, irregular)",
+      "Calendario de festivos personalizable",
+      "Excepciones de calendario (días especiales)",
+      "Definición de turnos"
+    ]
+  }
+];
+
+// Datos para Empleados
+const employeeFeatures = [
+  {
+    title: "Portal del Empleado",
+    icon: "tabler:user-circle",
+    color: "cyan",
+    items: [
+      "Fichar entrada y salida con un solo clic",
+      "Elegir modalidad: presencial 🏢 o teletrabajo 🏠",
+      "Ver historial de fichajes propios",
+      "Avisos automáticos de fichajes incompletos"
+    ]
+  },
+  {
+    title: "Solicitudes y Comunicación",
+    icon: "tabler:message-circle",
+    color: "indigo",
+    items: [
+      "Solicitar fichajes olvidados (sujeto a aprobación)",
+      "Solicitar anulación de fichajes erróneos",
+      "Rechazar fichajes añadidos por el admin (en 72h)"
+    ]
+  },
+  {
+    title: "Control Personal",
+    icon: "tabler:clock-check",
+    color: "teal",
+    items: [
+      "Ver saldo de horas acumulado",
+      "Calendario con festivos y días trabajados",
+      "Acceso a documentos propios (nóminas, contratos...)",
+      "Visualización de circulares/comunicados de la empresa"
+    ]
+  },
+  {
+    title: "Kiosco de Fichaje",
+    icon: "tabler:device-tablet",
+    color: "orange",
+    items: [
+      "Fichaje rápido con PIN de 4 dígitos",
+      "Ideal para zonas comunes o tablets compartidas",
+      "Sin necesidad de credenciales individuales"
+    ]
+  }
+];
+
+// Características técnicas
+const techFeatures = [
+  { icon: "tabler:cloud", title: "100% en la nube", description: "Sin instalaciones, accede desde cualquier dispositivo", color: "sky" },
+  { icon: "tabler:device-mobile", title: "Responsive", description: "Funciona en móvil, tablet y ordenador", color: "violet" },
+  { icon: "tabler:shield-lock", title: "Seguro", description: "Autenticación con Google, email o teléfono", color: "emerald" },
+  { icon: "tabler:bolt", title: "Tiempo real", description: "Datos sincronizados instantáneamente", color: "yellow" },
+  { icon: "tabler:scale", title: "Legal", description: "Cumple normativa española RD 8/2019", color: "red" },
+  { icon: "tabler:database", title: "4 años guardados", description: "Conservación automática de registros", color: "blue" }
+];
+
+// Mapeo de colores
+const colorMap = {
+  blue: { bg: "bg-blue-100", text: "text-blue-600", border: "border-blue-200", gradient: "from-blue-500 to-blue-600" },
+  green: { bg: "bg-green-100", text: "text-green-600", border: "border-green-200", gradient: "from-green-500 to-green-600" },
+  purple: { bg: "bg-purple-100", text: "text-purple-600", border: "border-purple-200", gradient: "from-purple-500 to-purple-600" },
+  amber: { bg: "bg-amber-100", text: "text-amber-600", border: "border-amber-200", gradient: "from-amber-500 to-amber-600" },
+  rose: { bg: "bg-rose-100", text: "text-rose-600", border: "border-rose-200", gradient: "from-rose-500 to-rose-600" },
+  cyan: { bg: "bg-cyan-100", text: "text-cyan-600", border: "border-cyan-200", gradient: "from-cyan-500 to-cyan-600" },
+  indigo: { bg: "bg-indigo-100", text: "text-indigo-600", border: "border-indigo-200", gradient: "from-indigo-500 to-indigo-600" },
+  teal: { bg: "bg-teal-100", text: "text-teal-600", border: "border-teal-200", gradient: "from-teal-500 to-teal-600" },
+  orange: { bg: "bg-orange-100", text: "text-orange-600", border: "border-orange-200", gradient: "from-orange-500 to-orange-600" },
+  sky: { bg: "bg-sky-100", text: "text-sky-600", border: "border-sky-200", gradient: "from-sky-500 to-sky-600" },
+  violet: { bg: "bg-violet-100", text: "text-violet-600", border: "border-violet-200", gradient: "from-violet-500 to-violet-600" },
+  emerald: { bg: "bg-emerald-100", text: "text-emerald-600", border: "border-emerald-200", gradient: "from-emerald-500 to-emerald-600" },
+  yellow: { bg: "bg-yellow-100", text: "text-yellow-600", border: "border-yellow-200", gradient: "from-yellow-500 to-yellow-600" },
+  red: { bg: "bg-red-100", text: "text-red-600", border: "border-red-200", gradient: "from-red-500 to-red-600" }
+};
+---
+
+<div class="features-list">
+  <!-- Pestañas de navegación -->
+  <div class="flex flex-wrap justify-center gap-2 mb-12">
+    <button 
+      data-tab="admin" 
+      class="tab-btn active flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 bg-blue-600 text-white shadow-lg shadow-blue-500/30"
+    >
+      <Icon name="tabler:building" class="w-5 h-5" />
+      <span>Para Administradores</span>
+    </button>
+    <button 
+      data-tab="employee" 
+      class="tab-btn flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 bg-slate-100 text-slate-600 hover:bg-slate-200"
+    >
+      <Icon name="tabler:user" class="w-5 h-5" />
+      <span>Para Empleados</span>
+    </button>
+    <button 
+      data-tab="tech" 
+      class="tab-btn flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 bg-slate-100 text-slate-600 hover:bg-slate-200"
+    >
+      <Icon name="tabler:cpu" class="w-5 h-5" />
+      <span>Características Técnicas</span>
+    </button>
+  </div>
+
+  <!-- Contenido de pestañas -->
+  <div class="tab-contents">
+    
+    <!-- Tab: Administradores -->
+    <div id="tab-admin" class="tab-content active">
+      <div class="text-center mb-10">
+        <span class="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">🏢 PANEL DE ADMINISTRACIÓN</span>
+        <h3 class="text-2xl md:text-3xl font-black text-slate-900">
+          Control total sobre tu equipo
+        </h3>
+        <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
+          Gestiona fichajes, empleados, informes y configuración desde un único panel intuitivo
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {adminFeatures.map((feature) => (
+          <div class={`group bg-white rounded-2xl p-6 border-2 ${colorMap[feature.color].border} hover:shadow-xl hover:shadow-${feature.color}-500/10 transition-all duration-300 hover:-translate-y-1`}>
+            <div class={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colorMap[feature.color].gradient} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform`}>
+              <Icon name={feature.icon} class="w-7 h-7 text-white" />
+            </div>
+            <h4 class="text-xl font-bold text-slate-900 mb-4">{feature.title}</h4>
+            <ul class="space-y-3">
+              {feature.items.map((item) => (
+                <li class="flex items-start gap-3 text-slate-600">
+                  <Icon name="tabler:check" class={`w-5 h-5 ${colorMap[feature.color].text} shrink-0 mt-0.5`} />
+                  <span class="text-sm">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Tab: Empleados -->
+    <div id="tab-employee" class="tab-content hidden">
+      <div class="text-center mb-10">
+        <span class="inline-block px-4 py-2 bg-lime-100 text-lime-700 rounded-full text-sm font-semibold mb-4">👤 PORTAL DEL EMPLEADO</span>
+        <h3 class="text-2xl md:text-3xl font-black text-slate-900">
+          Fichaje sencillo para tu equipo
+        </h3>
+        <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
+          Interfaz intuitiva para que tus empleados fichen sin complicaciones
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        {employeeFeatures.map((feature) => (
+          <div class={`group bg-white rounded-2xl p-6 border-2 ${colorMap[feature.color].border} hover:shadow-xl hover:shadow-${feature.color}-500/10 transition-all duration-300 hover:-translate-y-1`}>
+            <div class={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colorMap[feature.color].gradient} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform`}>
+              <Icon name={feature.icon} class="w-7 h-7 text-white" />
+            </div>
+            <h4 class="text-xl font-bold text-slate-900 mb-4">{feature.title}</h4>
+            <ul class="space-y-3">
+              {feature.items.map((item) => (
+                <li class="flex items-start gap-3 text-slate-600">
+                  <Icon name="tabler:check" class={`w-5 h-5 ${colorMap[feature.color].text} shrink-0 mt-0.5`} />
+                  <span class="text-sm">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Tab: Características Técnicas -->
+    <div id="tab-tech" class="tab-content hidden">
+      <div class="text-center mb-10">
+        <span class="inline-block px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold mb-4">✨ TECNOLOGÍA</span>
+        <h3 class="text-2xl md:text-3xl font-black text-slate-900">
+          Potente, seguro y siempre disponible
+        </h3>
+        <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
+          Tecnología moderna para que nunca te falte el registro horario
+        </p>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {techFeatures.map((feature) => (
+          <div class={`group bg-white rounded-2xl p-6 border-2 ${colorMap[feature.color].border} hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center`}>
+            <div class={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[feature.color].gradient} flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-110 transition-transform`}>
+              <Icon name={feature.icon} class="w-8 h-8 text-white" />
+            </div>
+            <h4 class="text-xl font-bold text-slate-900 mb-2">{feature.title}</h4>
+            <p class="text-slate-600 text-sm">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+      
+      <!-- Beneficios adicionales -->
+      <div class="mt-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 md:p-10">
+        <h4 class="text-2xl font-black text-white text-center mb-8">🎯 Beneficios Clave</h4>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+            <Icon name="tabler:check" class="w-6 h-6 text-lime-400 shrink-0" />
+            <span class="text-white text-sm">Cumplimiento legal automático del registro horario</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+            <Icon name="tabler:check" class="w-6 h-6 text-lime-400 shrink-0" />
+            <span class="text-white text-sm">Ahorro de tiempo en gestión administrativa</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+            <Icon name="tabler:check" class="w-6 h-6 text-lime-400 shrink-0" />
+            <span class="text-white text-sm">Transparencia para empleados y empresa</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+            <Icon name="tabler:check" class="w-6 h-6 text-lime-400 shrink-0" />
+            <span class="text-white text-sm">Flexibilidad con modalidad teletrabajo integrada</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+            <Icon name="tabler:check" class="w-6 h-6 text-lime-400 shrink-0" />
+            <span class="text-white text-sm">Control total sobre horas trabajadas y saldos</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+            <Icon name="tabler:check" class="w-6 h-6 text-lime-400 shrink-0" />
+            <span class="text-white text-sm">Sin papel - todo digital y exportable</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      // Actualizar botones
+      tabBtns.forEach(b => {
+        b.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-500/30');
+        b.classList.add('bg-slate-100', 'text-slate-600');
+      });
+      this.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-500/30');
+      this.classList.remove('bg-slate-100', 'text-slate-600');
+
+      // Actualizar contenido
+      tabContents.forEach(content => {
+        content.classList.add('hidden');
+        content.classList.remove('active');
+      });
+      const targetContent = document.getElementById('tab-' + targetTab);
+      if (targetContent) {
+        targetContent.classList.remove('hidden');
+        targetContent.classList.add('active');
+      }
+    });
+  });
+});
+</script>
+
+<style>
+  .tab-content {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .tab-content.active {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .tab-btn {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tab-btn:hover::after {
+    opacity: 1;
+  }
+</style>

@@ -1,289 +1,695 @@
 ---
-// src/pages/index.astro
+// src/pages/index.astro - Página Principal tictacdicta
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
-import PricingCard from "@components/pricing.astro";
+import FeaturesList from "@components/FeaturesList.astro";
+import PricingCalculator from "@components/PricingCalculator.astro";
 import { Picture } from "astro:assets";
 import { Icon } from "astro-icon/components";
+
+// Importar imágenes
 import heroImage from "assets/hero-trabajo.png";
-import fichajeImage from "assets/fichaje-centralizado.png";
-import instalacionImage from "assets/instalacion-soporte.png";
+import tabletImage from "assets/tablet.png";
+import adminFichajes from "assets/adminFichajes.png";
+import adminInforme1 from "assets/adminInforme1.png";
+import adminAusencias from "assets/adminAusencias.png";
+import portalInicio from "assets/portalInicio.png";
+import portalFichajes from "assets/portalFichajes.png";
+import portalCalendario from "assets/portalCalendario.png";
 
-// --- DATOS PARA LA SECCIÓN DE PRECIOS ---
-const pricing = [
-  { name: "Plan Estándar", price: { monthly: "15€", annual: "150€" }, period: "/mes", popular: false, features: ["Kiosco de Fichaje","Portal del empleado","Panel administrador","Informes simples","Cumple 100% con la ley"], button: { text: "Elige Estándar", link: "https://wa.me/34613139737?text=Hola%21%20estoy%20interesado%20en%20conocer%20m%C3%A1s%20informaci%C3%B3n%20del%20Plan%20Est%C3%A1ndar."  }},
-  { name: "Plan Profesional", price: { monthly: "25€", annual: "250€" }, period: "/mes", popular: true, features: ["Todo el plan Estándar","Gestión de Ausencias y Vacaciones","Calendarios Laborales","Informes Avanzados","Soporte Prioritario"], button: { text: "Elige Profesional", link: "https://wa.me/34613139737?text=Hola%21%20estoy%20interesado%20en%20conocer%20m%C3%A1s%20informaci%C3%B3n%20del%20Plan%20Profesional."  }},
-  { name: "Asesoría Digital/Completa", price: "A Medida", popular: false, features: ["Todo el Plan Profesional","Asesoría Fiscal, Laboral y Contable (con nuestro socio)","Asesoramiento Digital Personalizado","Soporte Exclusivo","Tu asesoría moderna y completa"], button: { text: "Elige a medida", link: "https://wa.me/34613139737?text=Hola%21%20estoy%20interesado%20en%20conocer%20m%C3%A1s%20informaci%C3%B3n%20del%20plan%20de%20Asesor%C3%ADa%20Digital."  }},
+// --- DATOS PARA FAQs ---
+const faqs = [
+  { question: "¿Es difícil de instalar?", answer: "No se instala nada. Es 100% web y app. Te lo dejamos todo configurado y empiezas a fichar en menos de 24 horas." },
+  { question: "¿Sirve para la nueva ley de 2025/2026?", answer: "Sí, cumplimos al 100% con el Real Decreto de Registro de Jornada: sistema digital, inalterable, con acceso remoto para inspecciones y conservación de datos 4 años." },
+  { question: "¿Tengo permanencia?", answer: "No, eres libre de irte cuando quieras. Sin ataduras ni letra pequeña." },
+  { question: "¿Funciona para trabajadores en obra o fuera de oficina?", answer: "Sí, la app móvil incluye geolocalización exacta para equipos en campo, obras o rutas comerciales." },
+  { question: "¿Qué pasa si tengo una inspección?", answer: "Con un solo clic generas el informe oficial en PDF, listo para entregar. El sistema permite acceso remoto inmediato como exige la ley." },
+  { question: "¿Cómo funciona la prueba gratuita?", answer: "Te damos 30 días gratis con todas las funciones activas. Sin tarjeta de crédito, sin compromiso. Si te convence, eliges tu plan." },
 ];
 
-// --- DATOS PARA LA SECCIÓN DE CARACTERÍSTICAS ---
-const featureOne = { title: "Fichaje Centralizado y Sencillo", description: "Instalamos nuestra app en una tablet en tu centro de trabajo (o en el smartphone de cada trabajador). Con un simple PIN personal, el registro es rápido, intuitivo y sin errores.", icon: "tabler:device-tablet-pin", image: fichajeImage };
-const featureTwo = { title: "Instalación y Soporte Personalizado", description: "No te dejamos solo. Nos desplazamos a tu negocio en Cádiz, configuramos todo por ti y formamos a tu equipo. Tu tranquilidad es nuestro objetivo.", icon: "tabler:headset", image: instalacionImage };
-const otherFeatures = [
- { title: "Informes Listos para Inspección", description: "Genera con un solo clic informes mensuales válidos legalmente, listos para cualquier inspección de trabajo.", icon: "tabler:file-analytics" },
- { title: "Portal del Empleado", description: "Cada trabajador tiene acceso a su propio historial de fichajes, solicitudes de vacaciones y calendario.", icon: "tabler:user-circle" },
- { title: "Gestión de Ausencias", description: "Digitaliza el proceso. Recibe, aprueba o rechaza solicitudes de vacaciones y ausencias desde tu panel.", icon: "tabler:calendar-time" },
- { title: "Acceso Seguro y RGPD", description: "Tu información está segura en la nube de Google. Tratamos todos los datos cumpliendo con el RGPD y te damos acceso a tu panel desde cualquier lugar.", icon: "tabler:cloud-lock" },
-];
-
-// --- DATOS PARA LA NUEVA SECCIÓN "CUMPLE CON LA LEY" ---
-const legalPoints = [
-    { title: "100% Digital e Inalterable", text: "Nuestro sistema es puramente digital, fiable y no modificable, eliminando el papel y Excel como exige la nueva normativa.", icon: "tabler:device-desktop-check" },
-    { title: "Acceso para la Inspección", text: "Generamos informes compatibles y preparados para el acceso remoto y en tiempo real de la Inspección de Trabajo y Seguridad Social (ITSS).", icon: "tabler:file-search" },
-    { title: "Conservación de 4 Años", text: "Guardamos todos los registros de forma segura durante los 4 años que marca la ley, para que no tengas que preocuparte por nada.", icon: "tabler:archive" },
-       { title: "Para Todas las Empresas", text: "Nuestra solución es universal y se adapta a cualquier PYME o autónomo con, al menos, un trabajador a su cargo.", icon: "tabler:building-community" },
+// --- DATOS PARA MÓDULOS ---
+const modules = [
+  { 
+    icon: "tabler:calendar-off", 
+    title: "Ausencias", 
+    description: "Gestión completa de vacaciones, permisos y bajas. Solicitudes de empleados con aprobación del admin.", 
+    price: "GRATIS", 
+    priceNote: "A petición de la empresa",
+    color: "green"
+  },
+  { 
+    icon: "tabler:map-pin", 
+    title: "Geolocalización", 
+    description: "Registro de ubicación GPS al fichar. Control de fichajes remotos para equipos en campo.", 
+    price: "GRATIS", 
+    priceNote: "A petición de la empresa",
+    color: "green"
+  },
+  { 
+    icon: "tabler:speakerphone", 
+    title: "Circulares", 
+    description: "Comunicados internos. Publicación desde admin con lectura obligatoria desde empleado.", 
+    price: "20€/año", 
+    priceNote: "Precio fijo",
+    color: "amber"
+  },
+  { 
+    icon: "tabler:file-text", 
+    title: "Documentos", 
+    description: "Repositorio de documentos por empleado (nóminas, certificados). Subida desde admin, consulta desde empleado.", 
+    price: "50€ - 100€/año", 
+    priceNote: "50€ (≤5 emp.) / 100€ (>5 emp.)",
+    color: "purple"
+  },
 ];
 ---
 
-<Layout title="tictacdicta - Cumple con la Ley de Registro Horario en Cádiz ">
-  <Container>
-
-    <main class="relative text-center overflow-hidden py-20 md:py-28">
-      <div class="absolute inset-0 z-0 pointer-events-none">
-        <Picture src={heroImage} alt="Trabajador usando tictacdicta" class="w-full h-full object-cover opacity-25" widths={[800, 1200, 1600]} sizes="100vw" loading="eager" format="avif"/>
-      </div>
-      <div class="relative z-10 max-w-4xl mx-auto px-4">
-        <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-brand-blue-dark">
-          El Registro Horario Digital, <span class="text-brand-blue">hecho fácil</span> para tu PYME.
+<Layout title="tictacdicta - Control Horario Digital | Cumple la Ley 2025">
+  
+  <!-- ============================================ -->
+  <!-- HERO SECTION -->
+  <!-- ============================================ -->
+  <section class="relative min-h-[90vh] flex items-center overflow-hidden">
+    <!-- Fondo con imagen y overlay gradiente -->
+    <div class="absolute inset-0 z-0">
+      <Picture 
+        src={heroImage} 
+        alt="Trabajador usando tictacdicta" 
+        class="w-full h-full object-cover" 
+        widths={[800, 1200, 1920]} 
+        sizes="100vw" 
+        loading="eager" 
+        format="avif"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-900/40"></div>
+    </div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Contenido izquierda -->
+      <div class="text-white">
+        <!-- Badge de urgencia -->
+        <div class="inline-flex items-center gap-2 bg-red-500/20 backdrop-blur-sm border border-red-500/30 text-red-300 px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-pulse">
+          <Icon name="tabler:alert-triangle" class="w-4 h-4" />
+          Nueva normativa 2025: Multas de hasta 7.500€
+        </div>
+        
+        <!-- H1 Principal -->
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] mb-6">
+          El Control Horario que cumple la Ley 2025 y 
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-green-400">elimina el Excel para siempre</span>
         </h1>
-        <p class="text-lg md:text-xl mt-6 text-slate-700 max-w-2xl mx-auto">
-          Nos encargamos de todo. Instalamos y configuramos el sistema en tu empresa para que cumplas con la ley sin perder un minuto.
+        
+        <!-- Subtítulo -->
+        <p class="text-xl text-slate-300 mb-8 leading-relaxed max-w-xl">
+          Digitaliza a tu equipo de obra, almacén u oficina en 24h. Geolocalización exacta y acceso remoto para inspecciones.
         </p>
-        <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#pricing" class="inline-block px-6 py-3 text-lg font-semibold rounded-lg bg-brand-blue hover:bg-brand-blue/90 text-white transition-colors">
-            Ver Planes
+        
+        <!-- CTA Principal -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+          <a href="https://wa.me/34613139737?text=Hola%21%20Quiero%20probar%20tictacdicta%20GRATIS" 
+             class="wa-contact group inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-bold rounded-2xl bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-400 hover:to-green-400 text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_40px_rgba(132,204,22,0.4)]">
+            <Icon class="w-6 h-6" name="ic:baseline-whatsapp" />
+            EMPEZAR PRUEBA GRATIS
           </a>
-          <a href="https://wa.me/34613139737" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-lg bg-green-500 text-white hover:bg-green-600 transition-colors">
-            <Icon class="w-5 h-5" name="ic:baseline-whatsapp" /> Contacta por WhatsApp
+          <a href="#precios" 
+             class="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold rounded-2xl border-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300">
+            <Icon class="w-5 h-5" name="tabler:calculator" />
+            Calcular precio
           </a>
         </div>
-      </div>
-    </main>
+        
+        <p class="text-slate-400 text-sm mb-10">30 días gratis · Sin tarjeta · Sin permanencia</p>
 
-    <div class="my-16 md:my-24 py-16 md:py-24 bg-slate-50 rounded-lg" id="ley">
-      <div class="text-center max-w-3xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark">
-          Cumple con la Nueva Ley de Registro Horario. Sin Complicaciones.
+        <!-- Indicadores de confianza -->
+        <div class="flex flex-wrap gap-6">
+          <div class="flex items-center gap-2 text-slate-300">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+              <Icon name="tabler:shield-check" class="w-5 h-5 text-lime-400" />
+            </div>
+            <span class="text-sm font-medium">100% Legal</span>
+          </div>
+          <div class="flex items-center gap-2 text-slate-300">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+              <Icon name="tabler:clock" class="w-5 h-5 text-lime-400" />
+            </div>
+            <span class="text-sm font-medium">Activo en 24h</span>
+          </div>
+          <div class="flex items-center gap-2 text-slate-300">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+              <Icon name="tabler:headset" class="w-5 h-5 text-lime-400" />
+            </div>
+            <span class="text-sm font-medium">Soporte personal</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mockup derecha - Tablet flotante -->
+      <div class="hidden lg:block relative">
+        <div class="relative">
+          <!-- Efecto glow detrás -->
+          <div class="absolute -inset-4 bg-gradient-to-r from-lime-500/20 to-blue-500/20 rounded-3xl blur-3xl"></div>
+          <Picture 
+            src={tabletImage} 
+            alt="App tictacdicta en tablet" 
+            class="relative rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500" 
+            widths={[400, 600]} 
+            sizes="500px"
+          />
+        </div>
+      </div>
+    </div>
+    
+    <!-- Scroll indicator -->
+    <a href="#problemas" class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 animate-bounce hover:text-white/80 transition-colors">
+      <Icon name="tabler:chevron-down" class="w-8 h-8" />
+    </a>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN: PUNTOS DE DOLOR -->
+  <!-- ============================================ -->
+  <section id="problemas" class="py-24 bg-white relative overflow-hidden scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-6 relative">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-semibold mb-4">⚠️ ATENCIÓN</span>
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-4">
+          ¿Sigues gestionando los horarios en papel?
         </h2>
-        <p class="text-lg mt-4 text-slate-600">
-          A partir de 2026, la normativa (evolución del R.D.-ley 8/2019) exigirá un sistema de fichaje digital a todas las empresas. Te explicamos los puntos clave y cómo `tictacdicta` te garantiza el cumplimiento.
+        <p class="text-2xl text-red-600 font-bold">Cuidado.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Dolor 1: Multas -->
+        <div class="group relative bg-gradient-to-br from-red-50 to-red-100/50 rounded-3xl p-8 border border-red-200/50 hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-500 hover:-translate-y-2">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-2xl group-hover:bg-red-500/10 transition-colors"></div>
+          <div class="relative">
+            <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-red-500/30">
+              <Icon name="tabler:gavel" class="w-8 h-8 text-white" />
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Riesgo de Sanción</h3>
+            <p class="text-slate-600 leading-relaxed">
+              Las multas por registros incorrectos o falta de acceso inmediato van desde <span class="font-bold text-red-600 text-lg">751€ hasta 7.500€</span> por trabajador.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Dolor 2: Caos -->
+        <div class="group relative bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-3xl p-8 border border-amber-200/50 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-500 hover:-translate-y-2">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 transition-colors"></div>
+          <div class="relative">
+            <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-amber-500/30">
+              <Icon name="tabler:clock-off" class="w-8 h-8 text-white" />
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Caos Administrativo</h3>
+            <p class="text-slate-600 leading-relaxed">
+              Deja de perseguir a los empleados a fin de mes para que firmen <span class="font-bold text-amber-600">hojas arrugadas</span> o rellenen Excel a mano.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Dolor 3: Inspecciones -->
+        <div class="group relative bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-3xl p-8 border border-orange-200/50 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 hover:-translate-y-2">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full blur-2xl group-hover:bg-orange-500/10 transition-colors"></div>
+          <div class="relative">
+            <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-orange-500/30">
+              <Icon name="tabler:eye" class="w-8 h-8 text-white" />
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Inspecciones Sorpresa</h3>
+            <p class="text-slate-600 leading-relaxed">
+              La nueva normativa exige <span class="font-bold text-orange-600">acceso remoto inmediato</span> a los registros. ¿Lo tienes listo?
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN: FUNCIONALIDADES -->
+  <!-- ============================================ -->
+  <section id="funcionalidades" class="py-24 bg-gradient-to-b from-slate-50 to-white scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">💼 FUNCIONALIDADES</span>
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6">
+          Todo lo que necesitas en <span class="text-blue-600">un solo lugar</span>
+        </h2>
+        <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+          Panel de administración completo y portal de empleado intuitivo. Cumple la ley sin complicaciones.
         </p>
       </div>
-      <div class="grid md:grid-cols-2 gap-x-8 gap-y-10 max-w-4xl mx-auto mt-16">
-        {legalPoints.map((item) => (
-          <div class="flex gap-4 items-start">
-            <div class="mt-1 bg-brand-blue text-white rounded-lg p-2 shrink-0">
-              <Icon class="w-6 h-6" name={item.icon} />
+      
+      <!-- Componente de funcionalidades con pestañas -->
+      <FeaturesList />
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN: CAPTURAS DE PANTALLA - ADMIN -->
+  <!-- ============================================ -->
+  <section class="py-24 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">💼 PANEL DE ADMINISTRACIÓN</span>
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6">
+          Control total para <span class="text-blue-600">gerencia y RRHH</span>
+        </h2>
+        <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+          Genera informes oficiales en PDF con un clic. Gestiona fichajes, ausencias y turnos sin tocar Excel nunca más.
+        </p>
+      </div>
+      
+      <!-- Grid de capturas del panel admin -->
+      <div class="grid lg:grid-cols-2 gap-8 mb-12">
+        <!-- Captura principal - Fichajes -->
+        <div class="group relative">
+          <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl blur-lg opacity-25 group-hover:opacity-40 transition-opacity"></div>
+          <div class="relative bg-white rounded-2xl p-2 shadow-xl">
+            <Picture 
+              src={adminFichajes} 
+              alt="Panel de fichajes administrativo" 
+              class="rounded-xl w-full" 
+              widths={[400, 800]} 
+              sizes="(max-width: 1024px) 100vw, 600px"
+            />
+            <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Icon name="tabler:list-check" class="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-900">Control de Fichajes</h4>
+                  <p class="text-sm text-slate-500">Todos los registros en tiempo real</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <h3 class="font-semibold text-lg text-brand-blue-dark">{item.title}</h3>
-              <p class="text-slate-500 mt-1">{item.text}</p>
+          </div>
+        </div>
+        
+        <!-- Captura - Informes -->
+        <div class="group relative">
+          <div class="absolute -inset-1 bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl blur-lg opacity-25 group-hover:opacity-40 transition-opacity"></div>
+          <div class="relative bg-white rounded-2xl p-2 shadow-xl">
+            <Picture 
+              src={adminInforme1} 
+              alt="Generación de informes" 
+              class="rounded-xl w-full" 
+              widths={[400, 800]} 
+              sizes="(max-width: 1024px) 100vw, 600px"
+            />
+            <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <Icon name="tabler:file-analytics" class="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-900">Informes en 1 clic</h4>
+                  <p class="text-sm text-slate-500">PDF oficial listo para inspección</p>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Captura Ausencias -->
+      <div class="group relative max-w-3xl mx-auto">
+        <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl blur-lg opacity-25 group-hover:opacity-40 transition-opacity"></div>
+        <div class="relative bg-white rounded-2xl p-2 shadow-xl">
+          <Picture 
+            src={adminAusencias} 
+            alt="Gestión de ausencias" 
+            class="rounded-xl w-full" 
+            widths={[400, 800]} 
+            sizes="(max-width: 1024px) 100vw, 800px"
+          />
+          <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                <Icon name="tabler:calendar-event" class="w-5 h-5 text-purple-600" />
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900">Gestión de Ausencias</h4>
+                <p class="text-sm text-slate-500">Vacaciones, permisos y bajas en un calendario visual</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN: CAPTURAS DE PANTALLA - EMPLEADO -->
+  <!-- ============================================ -->
+  <section class="py-24 bg-slate-900 overflow-hidden relative">
+    <!-- Efecto de gradiente -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-lime-500/20 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <!-- Contenido -->
+        <div class="text-white order-2 lg:order-1">
+          <span class="inline-block px-4 py-2 bg-lime-500/20 text-lime-400 rounded-full text-sm font-semibold mb-6">📱 PORTAL DEL EMPLEADO</span>
+          <h2 class="text-4xl md:text-5xl font-black mb-6 leading-tight">
+            Fichaje <span class="text-lime-400">ultra-sencillo</span> desde cualquier lugar
+          </h2>
+          <p class="text-xl text-slate-300 mb-8 leading-relaxed">
+            Entrar, pulsar un botón y listo. Desde el móvil con GPS para obras y rutas, o desde tablet en la entrada. <strong class="text-white">Sin formación necesaria.</strong>
+          </p>
+          
+          <ul class="space-y-4 mb-10">
+            <li class="flex items-center gap-4">
+              <div class="w-8 h-8 bg-lime-500 rounded-lg flex items-center justify-center shrink-0">
+                <Icon name="tabler:check" class="w-5 h-5 text-slate-900" />
+              </div>
+              <span class="text-lg text-slate-200">Fichaje con PIN en 3 segundos</span>
+            </li>
+            <li class="flex items-center gap-4">
+              <div class="w-8 h-8 bg-lime-500 rounded-lg flex items-center justify-center shrink-0">
+                <Icon name="tabler:check" class="w-5 h-5 text-slate-900" />
+              </div>
+              <span class="text-lg text-slate-200">Geolocalización para trabajo en campo</span>
+            </li>
+            <li class="flex items-center gap-4">
+              <div class="w-8 h-8 bg-lime-500 rounded-lg flex items-center justify-center shrink-0">
+                <Icon name="tabler:check" class="w-5 h-5 text-slate-900" />
+              </div>
+              <span class="text-lg text-slate-200">Portal con historial y vacaciones</span>
+            </li>
+            <li class="flex items-center gap-4">
+              <div class="w-8 h-8 bg-lime-500 rounded-lg flex items-center justify-center shrink-0">
+                <Icon name="tabler:check" class="w-5 h-5 text-slate-900" />
+              </div>
+              <span class="text-lg text-slate-200">Presencial 🏢 o Teletrabajo 🏠</span>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Mockups del portal empleado -->
+        <div class="order-1 lg:order-2 relative">
+          <div class="grid grid-cols-2 gap-4">
+            <!-- Imagen principal -->
+            <div class="col-span-2 relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-lime-500 to-green-500 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
+              <Picture 
+                src={portalInicio} 
+                alt="Portal del empleado - Inicio" 
+                class="relative rounded-2xl shadow-2xl w-full" 
+                widths={[400, 800]} 
+                sizes="600px"
+              />
+            </div>
+            <!-- Imágenes secundarias -->
+            <div class="relative group">
+              <Picture 
+                src={portalFichajes} 
+                alt="Historial de fichajes" 
+                class="rounded-xl shadow-xl w-full hover:scale-105 transition-transform duration-300" 
+                widths={[300, 400]} 
+                sizes="300px"
+              />
+            </div>
+            <div class="relative group">
+              <Picture 
+                src={portalCalendario} 
+                alt="Calendario laboral" 
+                class="rounded-xl shadow-xl w-full hover:scale-105 transition-transform duration-300" 
+                widths={[300, 400]} 
+                sizes="300px"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN: MÓDULOS OPCIONALES -->
+  <!-- ============================================ -->
+  <section id="modulos" class="py-24 bg-slate-900 relative overflow-hidden scroll-mt-20">
+    <!-- Efectos de fondo -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-2 bg-white/10 text-white rounded-full text-sm font-semibold mb-4">🔧 MÓDULOS OPCIONALES</span>
+        <h2 class="text-4xl md:text-5xl font-black text-white mb-6">
+          Activa solo lo que <span class="text-lime-400">necesitas</span>
+        </h2>
+        <p class="text-xl text-slate-300 max-w-3xl mx-auto">
+          Personaliza tu plan con módulos adicionales. Algunos son gratuitos, otros tienen un pequeño coste anual.
+        </p>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {modules.map((mod) => (
+          <div class={`group bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2`}>
+            <div class={`w-14 h-14 rounded-2xl ${mod.color === 'green' ? 'bg-gradient-to-br from-green-500 to-emerald-600' : mod.color === 'amber' ? 'bg-gradient-to-br from-amber-500 to-orange-600' : 'bg-gradient-to-br from-purple-500 to-indigo-600'} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform`}>
+              <Icon name={mod.icon} class="w-7 h-7 text-white" />
+            </div>
+            <h4 class="text-xl font-bold text-white mb-2">{mod.title}</h4>
+            <p class="text-slate-400 text-sm mb-4">{mod.description}</p>
+            <div class={`inline-block px-3 py-1 rounded-full text-sm font-bold ${mod.color === 'green' ? 'bg-green-500/20 text-green-400' : mod.color === 'amber' ? 'bg-amber-500/20 text-amber-400' : 'bg-purple-500/20 text-purple-400'}`}>
+              {mod.price}
+            </div>
+            <p class="text-slate-500 text-xs mt-2">{mod.priceNote}</p>
           </div>
         ))}
       </div>
-      <div class="mt-12 max-w-3xl mx-auto border-t-2 border-amber-500/50 pt-6 text-center">
-        <h3 class="font-bold text-xl text-brand-blue-dark flex items-center justify-center gap-2">
-            <Icon name="tabler:alert-triangle" class="w-6 h-6 text-amber-500"/>
-            No te la juegues: evita sanciones
-        </h3>
-        <p class="text-slate-600 mt-2">
-            El incumplimiento de esta obligación se considera una infracción grave, con sanciones que pueden ir desde los 751€ hasta los 7.500€.
-        </p>
-      </div>
     </div>
-    
-    <div class="my-16 md:my-24" id="features">
-  <div class="text-center max-w-3xl mx-auto">
-    <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark">
-      Un servicio completo, no solo un software
-    </h2>
-    <p class="text-lg mt-4 text-slate-600">
-      Te damos el control y la tranquilidad que necesitas para gestionar a tu equipo y cumplir con la normativa.
-    </p>
-  </div>
+  </section>
 
-  <div class="space-y-16 mt-16">
-    <div class="grid md:grid-cols-2 gap-10 items-center">
-      <div class="order-1">
-        <div class="bg-slate-50 p-8 rounded-lg">
-          <div class="flex gap-4 items-start">
-            <div class="mt-1 bg-brand-blue text-white rounded-lg p-2 shrink-0">
-              <Icon class="w-6 h-6" name={featureOne.icon} />
-            </div>
-            <div>
-              <h3 class="font-semibold text-xl text-brand-blue-dark">{featureOne.title}</h3>
-              <p class="text-slate-500 mt-2 leading-relaxed text-lg">{featureOne.description}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="order-2">
-        <Picture src={featureOne.image} alt={featureOne.title} class="rounded-lg shadow-lg" widths={[400, 800]} sizes="(max-width: 800px) 100vw, 800px" />
-      </div>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 mt-16 gap-8">
-      {otherFeatures.map((item) => (
-        // CAMBIO: Fondo gris claro, sin sombras ni efectos hover
-        <div class="bg-slate-50 p-6 rounded-lg text-center">
-          <div class="bg-brand-blue text-white rounded-lg p-2 w-10 h-10 inline-block">
-            <Icon class="w-6 h-6" name={item.icon} />
-          </div>
-          <h3 class="font-semibold text-lg text-brand-blue-dark mt-4">{item.title}</h3>
-          <p class="text-slate-500 mt-2 text-sm">{item.description}</p>
-        </div>
-      ))}
-    </div>
-
-     <div class="grid md:grid-cols-2 gap-10 items-center">
-      <div class="order-1">
-        <div class="bg-slate-50 p-8 rounded-lg">
-          <div class="flex gap-4 items-start">
-            <div class="mt-1 bg-brand-blue text-white rounded-lg p-2 shrink-0">
-              <Icon class="w-6 h-6" name={featureTwo.icon} />
-            </div>
-            <div>
-              <h3 class="font-semibold text-xl text-brand-blue-dark">{featureTwo.title}</h3>
-              <p class="text-slate-500 mt-2 leading-relaxed text-lg">{featureTwo.description}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="order-2 md:order-first">
-        <Picture src={featureTwo.image} alt={featureTwo.title} class="rounded-lg shadow-lg" widths={[400, 800]} sizes="(max-width: 800px) 100vw, 800px" />
-      </div>
-    </div>
-  </div>
-</div>
-
-    <!-- SECCIÓN TESTIMONIOS -->
-    <div class="my-16 md:my-24 py-16 md:py-24 bg-slate-50 rounded-lg" id="testimonios">
-      <div class="text-center max-w-3xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark">
-          Lo que dicen nuestros clientes
+  <!-- ============================================ -->
+  <!-- SECCIÓN: CALCULADORA DE PRECIOS -->
+  <!-- ============================================ -->
+  <section id="precios" class="py-24 bg-gradient-to-b from-slate-50 to-white scroll-mt-20">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="inline-block px-4 py-2 bg-lime-100 text-lime-700 rounded-full text-sm font-semibold mb-4">💰 PRECIOS TRANSPARENTES</span>
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6">
+          Precios <span class="text-lime-600">claros y justos</span>
         </h2>
-        <p class="text-lg mt-4 text-slate-600">
-          Empresas reales que ya confían en tictacdicta para su registro horario.
+        <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+          Paga solo por lo que necesitas. Sin sorpresas, sin letra pequeña.
         </p>
       </div>
-      <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-12 px-4">
+      
+      <!-- Componente calculadora de precios -->
+      <PricingCalculator />
+      
+      <!-- Notas adicionales -->
+      <div class="mt-12 grid sm:grid-cols-3 gap-6 text-center">
+        <div class="flex flex-col items-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+            <Icon name="tabler:credit-card-off" class="w-6 h-6 text-blue-600" />
+          </div>
+          <p class="text-slate-600 text-sm">Sin tarjeta para empezar</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+            <Icon name="tabler:refresh-off" class="w-6 h-6 text-green-600" />
+          </div>
+          <p class="text-slate-600 text-sm">Sin permanencia</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mb-3">
+            <Icon name="tabler:receipt-off" class="w-6 h-6 text-amber-600" />
+          </div>
+          <p class="text-slate-600 text-sm">Precios sin IVA (21%)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN: TESTIMONIOS -->
+  <!-- ============================================ -->
+  <section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold mb-4">⭐ TESTIMONIOS</span>
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-4">
+          Empresas que ya duermen tranquilas
+        </h2>
+        <p class="text-xl text-slate-600">Lo dicen ellos, no nosotros</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
         <!-- Testimonio 1 -->
-        <div class="bg-white p-6 rounded-xl shadow-sm">
-          <div class="flex items-center gap-1 text-amber-400 mb-4">
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
+        <div class="bg-slate-50 rounded-3xl p-8 hover:shadow-xl transition-shadow border border-slate-100">
+          <div class="flex items-center gap-1 text-amber-400 mb-6">
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
           </div>
-          <p class="text-slate-600 italic mb-4">
-            "Llevábamos años con el papel y Excel, y siempre era un caos. Sergio nos instaló todo en una mañana y desde entonces <span class="font-semibold text-brand-blue-dark">llevamos 8 meses sin ningún problema</span>. Súper fácil de usar."
-          </p>
-          <div class="flex items-center gap-3 mt-4 pt-4 border-t border-slate-100">
-            <div class="bg-brand-blue text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">MC</div>
+          <blockquote class="text-slate-700 text-lg mb-8 leading-relaxed">
+            "Desde que usamos tictacdicta, <strong class="text-slate-900">las inspecciones ya no nos dan miedo</strong>. Sergio nos lo dejó todo montado y el informe sale en un clic."
+          </blockquote>
+          <div class="flex items-center gap-4 pt-6 border-t border-slate-200">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-lg">AR</div>
             <div>
-              <p class="font-semibold text-brand-blue-dark">María del Carmen</p>
-              <p class="text-sm text-slate-500">Gerente, Distribuidora de Alimentación</p>
+              <p class="font-bold text-slate-900">Antonio R.</p>
+              <p class="text-slate-500 text-sm">Gerente, Construcciones y Reformas</p>
             </div>
           </div>
         </div>
+        
         <!-- Testimonio 2 -->
-        <div class="bg-white p-6 rounded-xl shadow-sm">
-          <div class="flex items-center gap-1 text-amber-400 mb-4">
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
+        <div class="bg-slate-50 rounded-3xl p-8 hover:shadow-xl transition-shadow border border-slate-100">
+          <div class="flex items-center gap-1 text-amber-400 mb-6">
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
           </div>
-          <p class="text-slate-600 italic mb-4">
-            "Lo que más valoro es la <span class="font-semibold text-brand-blue-dark">atención personalizada de Sergio</span>. Me resolvió todas las dudas por WhatsApp en el momento. Mis empleados fichaban sin problema desde el primer día."
-          </p>
-          <div class="flex items-center gap-3 mt-4 pt-4 border-t border-slate-100">
-            <div class="bg-brand-blue text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">JA</div>
+          <blockquote class="text-slate-700 text-lg mb-8 leading-relaxed">
+            "Llevábamos años con papel y Excel. Ahora mis 12 empleados fichan en 3 segundos y <strong class="text-slate-900">yo ahorro 5 horas al mes</strong> en papeleo."
+          </blockquote>
+          <div class="flex items-center gap-4 pt-6 border-t border-slate-200">
+            <div class="w-14 h-14 bg-gradient-to-br from-green-600 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-lg">MC</div>
             <div>
-              <p class="font-semibold text-brand-blue-dark">José Antonio</p>
-              <p class="text-sm text-slate-500">Propietario, Taller Mecánico</p>
+              <p class="font-bold text-slate-900">María del Carmen</p>
+              <p class="text-slate-500 text-sm">Distribuidora de Alimentación</p>
             </div>
           </div>
         </div>
+        
         <!-- Testimonio 3 -->
-        <div class="bg-white p-6 rounded-xl shadow-sm">
-          <div class="flex items-center gap-1 text-amber-400 mb-4">
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
-            <Icon name="tabler:star-filled" class="w-5 h-5" />
+        <div class="bg-slate-50 rounded-3xl p-8 hover:shadow-xl transition-shadow border border-slate-100">
+          <div class="flex items-center gap-1 text-amber-400 mb-6">
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
+            <Icon name="tabler:star-filled" class="w-6 h-6" />
           </div>
-          <p class="text-slate-600 italic mb-4">
-            "Tenía miedo de que mis trabajadores no supieran usarlo, pero es <span class="font-semibold text-brand-blue-dark">tan sencillo como poner un PIN</span>. Ahora genero los informes en un clic cuando los necesito. Muy tranquila ante cualquier inspección."
-          </p>
-          <div class="flex items-center gap-3 mt-4 pt-4 border-t border-slate-100">
-            <div class="bg-brand-blue text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">LP</div>
+          <blockquote class="text-slate-700 text-lg mb-8 leading-relaxed">
+            "Lo que más valoro es que <strong class="text-slate-900">Sergio me resuelve las dudas al momento</strong> por WhatsApp. Eso no lo encuentras en las grandes empresas."
+          </blockquote>
+          <div class="flex items-center gap-4 pt-6 border-t border-slate-200">
+            <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-lg">JA</div>
             <div>
-              <p class="font-semibold text-brand-blue-dark">Laura Pérez</p>
-              <p class="text-sm text-slate-500">Administradora, Empresa de Limpieza</p>
+              <p class="font-bold text-slate-900">José Antonio</p>
+              <p class="text-slate-500 text-sm">Propietario, Taller Mecánico</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
-    <div id="pricing" class="my-16 md:my-24">
-      <div class="text-center max-w-3xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark">
-          Precios Claros y Flexibles
-        </h2>
-        <p class="text-lg mt-4 text-slate-600">
-          Un plan para cada tipo de PYME. Ahorra eligiendo el plan anual.
-        </p>
-      </div>
-      <div class="grid md:grid-cols-3 gap-8 mx-auto max-w-screen-lg mt-16">
-        {pricing.map((item) => <PricingCard plan={item} />)}
-      </div>
-      <div class="text-center text-sm text-slate-500 mt-8 space-y-1">
-        <p>* La tablet para el modo Kiosko no está incluida en el precio de los planes.</p>
-		<p>** Precios aplicables hasta 15 empleados.</p>
-        <p>*** Precios mostrados sin IVA (21%).</p>
-      </div>
-    </div>
-    
-    <div id="contact" class="my-16 md:my-24">
-      <div class="text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark">
-          ¿Hablamos?
-        </h2>
-      </div>
-      <div class="flex justify-center mt-12">
-        <div class="text-center">
-          <h3 class="font-medium text-2xl text-brand-blue-dark">Contacta con tictacdicta</h3>
-          <p class="text-lg leading-relaxed text-slate-500 mt-3 max-w-lg mx-auto">
-            ¿Tienes alguna duda o quieres una demo personalizada? Estaremos encantados de atenderte por la vía que prefieras.
-          </p>
-          <div class="mt-8 flex flex-col items-center gap-4">
-            <div class="flex items-center justify-center">
-              <a href="https://wa.me/34613139737" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-lg border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-colors">
-                <Icon class="w-5 h-5" name="ic:baseline-whatsapp" /> Contacta por WhatsApp
-              </a>
-            </div>
-            <div class="flex items-center justify-center mt-2 space-x-2 text-gray-600">
-              <Icon class="w-4 h-4" name="uil:envelope" />
-              <a href="mailto:contacto@tictacdicta.es" class="hover:text-brand-blue">contacto@tictacdicta.es</a>
-            </div>
-            <div class="flex items-center justify-center mt-2 space-x-2 text-gray-600">
-              <Icon class="w-4 h-4" name="uil:phone" />
-              <a href="tel:+34613139737" class="hover:text-brand-blue">+34 613 13 97 37</a>
-            </div>
-            <div class="flex items-center justify-center mt-2 space-x-2 text-gray-600">
-              <Icon class="w-4 h-4" name="uil:map-marker" />
-              <span>Cádiz</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  </section>
 
-  </Container>
+  <!-- ============================================ -->
+  <!-- SECCIÓN: FAQ -->
+  <!-- ============================================ -->
+  <section class="py-24 bg-slate-50">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-2 bg-slate-200 text-slate-700 rounded-full text-sm font-semibold mb-4">❓ FAQ</span>
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900">
+          Preguntas frecuentes
+        </h2>
+      </div>
+      
+      <div class="space-y-4">
+        {faqs.map((faq) => (
+          <details class="group bg-white rounded-2xl overflow-hidden shadow-sm">
+            <summary class="flex items-center justify-between cursor-pointer p-6 font-bold text-slate-900 text-lg hover:bg-slate-50 transition-colors">
+              <span>{faq.question}</span>
+              <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center group-open:rotate-180 transition-transform">
+                <Icon name="tabler:chevron-down" class="w-5 h-5 text-slate-600" />
+              </div>
+            </summary>
+            <div class="px-6 pb-6 text-slate-600 text-lg leading-relaxed">
+              {faq.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN: CONTACTO -->
+  <!-- ============================================ -->
+  <section id="contacto" class="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden scroll-mt-20">
+    <!-- Efectos de fondo -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-lime-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+    
+    <div class="max-w-4xl mx-auto px-6 text-center relative">
+      <h2 class="text-4xl md:text-6xl font-black text-white mb-6">
+        Prueba tictacdicta <span class="text-lime-400">30 días GRATIS</span>
+      </h2>
+      <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
+        Sin tarjeta de crédito · Sin permanencia · Te lo dejamos todo configurado
+      </p>
+      
+      <a href="https://wa.me/34613139737?text=Hola%21%20Quiero%20probar%20tictacdicta%20GRATIS" 
+         class="wa-contact group inline-flex items-center justify-center gap-3 px-10 py-5 text-xl font-black rounded-2xl bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-400 hover:to-green-400 text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_60px_rgba(132,204,22,0.5)]">
+        <Icon class="w-7 h-7" name="ic:baseline-whatsapp" />
+        CONTACTAR AHORA POR WHATSAPP
+      </a>
+      
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 text-slate-400">
+        <a href="tel:+34613139737" class="flex items-center gap-2 hover:text-white transition-colors">
+          <Icon name="tabler:phone" class="w-5 h-5" />
+          <span>+34 613 13 97 37</span>
+        </a>
+        <a href="mailto:contacto@tictacdicta.es" class="flex items-center gap-2 hover:text-white transition-colors">
+          <Icon name="tabler:mail" class="w-5 h-5" />
+          <span>contacto@tictacdicta.es</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- STICKY CTA MOBILE -->
+  <!-- ============================================ -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-slate-200 p-4 md:hidden z-50 shadow-2xl">
+    <a href="https://wa.me/34613139737?text=Hola%21%20Quiero%20probar%20tictacdicta%20GRATIS" 
+       class="wa-contact flex items-center justify-center gap-2 w-full py-4 text-lg font-black rounded-xl bg-gradient-to-r from-lime-500 to-green-500 text-slate-900 shadow-lg">
+      <Icon class="w-6 h-6" name="ic:baseline-whatsapp" />
+      PRUEBA GRATIS 30 DÍAS
+    </a>
+  </div>
+
+  <!-- Espacio extra en móvil para el sticky footer -->
+  <div class="h-24 md:hidden"></div>
+
 </Layout>
+
+<!-- Scroll suave -->
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+
+<!-- Script para tracking de Meta Pixel y Google Ads en botones de WhatsApp -->
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Seleccionar todos los botones de WhatsApp por la clase
+    var botonesWhatsApp = document.querySelectorAll('.wa-contact');
+    
+    botonesWhatsApp.forEach(function(boton) {
+      boton.addEventListener('click', function() {
+        // Disparar evento Contact de Meta Pixel
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Contact');
+        }
+        // Disparar evento de conversión de Google Ads
+        if (typeof gtag_report_conversion !== 'undefined') {
+          gtag_report_conversion();
+        }
+      });
+    });
+  });
+</script>
