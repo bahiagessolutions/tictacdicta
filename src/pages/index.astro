@@ -168,7 +168,7 @@ const modules = [
   <!-- ============================================ -->
   <!-- SECCIÓN: PUNTOS DE DOLOR -->
   <!-- ============================================ -->
-  <section id="problemas" class="py-24 bg-white relative overflow-hidden scroll-mt-20">
+  <section id="problemas" class="hidden md:block py-24 bg-white relative overflow-hidden scroll-mt-20">
     <div class="max-w-7xl mx-auto px-6 relative">
       <div class="text-center mb-16">
         <span class="inline-block px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-semibold mb-4">⚠️ ATENCIÓN</span>
@@ -227,7 +227,7 @@ const modules = [
   <!-- ============================================ -->
   <!-- SECCIÓN: FUNCIONALIDADES -->
   <!-- ============================================ -->
-  <section id="funcionalidades" class="py-24 bg-gradient-to-b from-slate-50 to-white scroll-mt-20">
+  <section id="funcionalidades" class="py-12 md:py-24 bg-gradient-to-b from-slate-50 to-white scroll-mt-20">
     <div class="max-w-7xl mx-auto px-6">
       <div class="text-center mb-12">
         <span class="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">💼 FUNCIONALIDADES</span>
@@ -247,7 +247,7 @@ const modules = [
   <!-- ============================================ -->
   <!-- SECCIÓN: CAPTURAS DE PANTALLA - ADMIN -->
   <!-- ============================================ -->
-  <section class="py-24 bg-white overflow-hidden">
+  <section class="py-12 md:py-24 bg-white overflow-hidden">
     <div class="max-w-7xl mx-auto px-6">
       <div class="text-center mb-16">
         <span class="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">💼 PANEL DE ADMINISTRACIÓN</span>
@@ -286,8 +286,8 @@ const modules = [
           </div>
         </div>
         
-        <!-- Captura - Informes -->
-        <div class="group relative">
+        <!-- Captura - Informes (solo desktop) -->
+        <div class="hidden md:block group relative">
           <div class="absolute -inset-1 bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl blur-lg opacity-25 group-hover:opacity-40 transition-opacity"></div>
           <div class="relative bg-white rounded-2xl p-2 shadow-xl">
             <Picture 
@@ -312,8 +312,8 @@ const modules = [
         </div>
       </div>
       
-      <!-- Captura Ausencias -->
-      <div class="group relative max-w-3xl mx-auto">
+      <!-- Captura Ausencias (solo desktop) -->
+      <div class="hidden md:block group relative max-w-3xl mx-auto">
         <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl blur-lg opacity-25 group-hover:opacity-40 transition-opacity"></div>
         <div class="relative bg-white rounded-2xl p-2 shadow-xl">
           <Picture 
@@ -342,7 +342,7 @@ const modules = [
   <!-- ============================================ -->
   <!-- SECCIÓN: CAPTURAS DE PANTALLA - EMPLEADO -->
   <!-- ============================================ -->
-  <section class="py-24 bg-slate-900 overflow-hidden relative">
+  <section class="py-12 md:py-24 bg-slate-900 overflow-hidden relative">
     <!-- Efecto de gradiente -->
     <div class="absolute top-0 left-1/4 w-96 h-96 bg-lime-500/20 rounded-full blur-3xl"></div>
     <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
@@ -429,34 +429,33 @@ const modules = [
   <!-- ============================================ -->
   <!-- SECCIÓN: MÓDULOS OPCIONALES -->
   <!-- ============================================ -->
-  <section id="modulos" class="py-24 bg-slate-900 relative overflow-hidden scroll-mt-20">
+  <section id="modulos" class="py-12 md:py-24 bg-slate-900 relative overflow-hidden scroll-mt-20">
     <!-- Efectos de fondo -->
     <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
     <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
     
     <div class="max-w-7xl mx-auto px-6 relative">
-      <div class="text-center mb-16">
+      <div class="text-center mb-8 md:mb-16">
         <span class="inline-block px-4 py-2 bg-white/10 text-white rounded-full text-sm font-semibold mb-4">🔧 MÓDULOS OPCIONALES</span>
-        <h2 class="text-4xl md:text-5xl font-black text-white mb-6">
+        <h2 class="text-2xl md:text-4xl font-black text-white mb-4">
           Activa solo lo que <span class="text-lime-400">necesitas</span>
         </h2>
-        <p class="text-xl text-slate-300 max-w-3xl mx-auto">
-          Personaliza tu plan con módulos adicionales. Algunos son gratuitos, otros tienen un pequeño coste anual.
+        <p class="text-base md:text-xl text-slate-300 max-w-3xl mx-auto">
+          Algunos son gratuitos, otros tienen un pequeño coste anual.
         </p>
       </div>
       
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         {modules.map((mod) => (
-          <div class={`group bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2`}>
-            <div class={`w-14 h-14 rounded-2xl ${mod.color === 'green' ? 'bg-gradient-to-br from-green-500 to-emerald-600' : mod.color === 'amber' ? 'bg-gradient-to-br from-amber-500 to-orange-600' : 'bg-gradient-to-br from-purple-500 to-indigo-600'} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform`}>
-              <Icon name={mod.icon} class="w-7 h-7 text-white" />
+          <div class={`group bg-white/5 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2`}>
+            <div class={`w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl ${mod.color === 'green' ? 'bg-gradient-to-br from-green-500 to-emerald-600' : mod.color === 'amber' ? 'bg-gradient-to-br from-amber-500 to-orange-600' : 'bg-gradient-to-br from-purple-500 to-indigo-600'} flex items-center justify-center mb-3 md:mb-5 shadow-lg`}>
+              <Icon name={mod.icon} class="w-5 h-5 md:w-7 md:h-7 text-white" />
             </div>
-            <h4 class="text-xl font-bold text-white mb-2">{mod.title}</h4>
-            <p class="text-slate-400 text-sm mb-4">{mod.description}</p>
-            <div class={`inline-block px-3 py-1 rounded-full text-sm font-bold ${mod.color === 'green' ? 'bg-green-500/20 text-green-400' : mod.color === 'amber' ? 'bg-amber-500/20 text-amber-400' : 'bg-purple-500/20 text-purple-400'}`}>
+            <h4 class="text-base md:text-xl font-bold text-white mb-1 md:mb-2">{mod.title}</h4>
+            <p class="hidden md:block text-slate-400 text-sm mb-4">{mod.description}</p>
+            <div class={`inline-block px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold ${mod.color === 'green' ? 'bg-green-500/20 text-green-400' : mod.color === 'amber' ? 'bg-amber-500/20 text-amber-400' : 'bg-purple-500/20 text-purple-400'}`}>
               {mod.price}
             </div>
-            <p class="text-slate-500 text-xs mt-2">{mod.priceNote}</p>
           </div>
         ))}
       </div>
@@ -466,15 +465,15 @@ const modules = [
   <!-- ============================================ -->
   <!-- SECCIÓN: CALCULADORA DE PRECIOS -->
   <!-- ============================================ -->
-  <section id="precios" class="py-24 bg-gradient-to-b from-slate-50 to-white scroll-mt-20">
+  <section id="precios" class="py-12 md:py-24 bg-gradient-to-b from-slate-50 to-white scroll-mt-20">
     <div class="max-w-4xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <span class="inline-block px-4 py-2 bg-lime-100 text-lime-700 rounded-full text-sm font-semibold mb-4">💰 PRECIOS TRANSPARENTES</span>
-        <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-          Precios <span class="text-lime-600">claros y justos</span>
+      <div class="text-center mb-8 md:mb-12">
+        <span class="inline-block px-4 py-2 bg-lime-100 text-lime-700 rounded-full text-sm font-semibold mb-4">💰 PRECIOS</span>
+        <h2 class="text-2xl md:text-4xl font-black text-slate-900 mb-3">
+          Precios <span class="text-lime-600">claros</span>
         </h2>
-        <p class="text-xl text-slate-600 max-w-2xl mx-auto">
-          Paga solo por lo que necesitas. Sin sorpresas, sin letra pequeña.
+        <p class="text-base md:text-xl text-slate-600 max-w-2xl mx-auto">
+          Sin sorpresas, sin letra pequeña.
         </p>
       </div>
       
@@ -508,7 +507,7 @@ const modules = [
   <!-- ============================================ -->
   <!-- SECCIÓN: TESTIMONIOS -->
   <!-- ============================================ -->
-  <section class="py-24 bg-white">
+  <section class="hidden md:block py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6">
       <div class="text-center mb-16">
         <span class="inline-block px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold mb-4">⭐ TESTIMONIOS</span>
@@ -588,25 +587,25 @@ const modules = [
   <!-- ============================================ -->
   <!-- SECCIÓN: FAQ -->
   <!-- ============================================ -->
-  <section class="py-24 bg-slate-50">
+  <section class="py-12 md:py-24 bg-slate-50">
     <div class="max-w-3xl mx-auto px-6">
-      <div class="text-center mb-16">
+      <div class="text-center mb-8 md:mb-16">
         <span class="inline-block px-4 py-2 bg-slate-200 text-slate-700 rounded-full text-sm font-semibold mb-4">❓ FAQ</span>
-        <h2 class="text-4xl md:text-5xl font-black text-slate-900">
+        <h2 class="text-2xl md:text-4xl font-black text-slate-900">
           Preguntas frecuentes
         </h2>
       </div>
       
-      <div class="space-y-4">
+      <div class="space-y-3 md:space-y-4">
         {faqs.map((faq) => (
-          <details class="group bg-white rounded-2xl overflow-hidden shadow-sm">
-            <summary class="flex items-center justify-between cursor-pointer p-6 font-bold text-slate-900 text-lg hover:bg-slate-50 transition-colors">
-              <span>{faq.question}</span>
-              <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center group-open:rotate-180 transition-transform">
-                <Icon name="tabler:chevron-down" class="w-5 h-5 text-slate-600" />
+          <details class="group bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-sm">
+            <summary class="flex items-center justify-between cursor-pointer p-4 md:p-6 font-bold text-slate-900 text-base md:text-lg hover:bg-slate-50 transition-colors">
+              <span class="pr-4">{faq.question}</span>
+              <div class="w-8 h-8 md:w-10 md:h-10 bg-slate-100 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0 group-open:rotate-180 transition-transform">
+                <Icon name="tabler:chevron-down" class="w-4 h-4 md:w-5 md:h-5 text-slate-600" />
               </div>
             </summary>
-            <div class="px-6 pb-6 text-slate-600 text-lg leading-relaxed">
+            <div class="px-4 pb-4 md:px-6 md:pb-6 text-slate-600 text-sm md:text-lg leading-relaxed">
               {faq.answer}
             </div>
           </details>
@@ -618,32 +617,32 @@ const modules = [
   <!-- ============================================ -->
   <!-- SECCIÓN: CONTACTO -->
   <!-- ============================================ -->
-  <section id="contacto" class="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden scroll-mt-20">
+  <section id="contacto" class="py-12 md:py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden scroll-mt-20">
     <!-- Efectos de fondo -->
     <div class="absolute top-0 left-1/4 w-96 h-96 bg-lime-500/10 rounded-full blur-3xl"></div>
     <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
     
     <div class="max-w-4xl mx-auto px-6 text-center relative">
-      <h2 class="text-4xl md:text-6xl font-black text-white mb-6">
-        Prueba tictacdicta <span class="text-lime-400">30 días GRATIS</span>
+      <h2 class="text-2xl md:text-5xl font-black text-white mb-3 md:mb-4">
+        Prueba tictacdicta <span class="text-lime-400">GRATIS</span>
       </h2>
-      <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
-        Sin tarjeta de crédito · Sin permanencia · Te lo dejamos todo configurado
+      <p class="text-base md:text-lg text-slate-300 mb-6 md:mb-8 max-w-2xl mx-auto">
+        Sin tarjeta · Sin permanencia
       </p>
       
       <a href="https://wa.me/34613139737?text=Hola%21%20Quiero%20probar%20tictacdicta%20GRATIS" 
-         class="wa-contact group inline-flex items-center justify-center gap-3 px-10 py-5 text-xl font-black rounded-2xl bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-400 hover:to-green-400 text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_60px_rgba(132,204,22,0.5)]">
-        <Icon class="w-7 h-7" name="ic:baseline-whatsapp" />
-        CONTACTAR AHORA POR WHATSAPP
+         class="wa-contact group inline-flex items-center justify-center gap-2 md:gap-3 px-6 py-4 md:px-10 md:py-5 text-base md:text-xl font-black rounded-xl md:rounded-2xl bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-400 hover:to-green-400 text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_60px_rgba(132,204,22,0.5)]">
+        <Icon class="w-5 h-5 md:w-7 md:h-7" name="ic:baseline-whatsapp" />
+        CONTACTAR POR WHATSAPP
       </a>
       
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 text-slate-400">
+      <div class="mt-6 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 text-slate-400 text-sm md:text-base">
         <a href="tel:+34613139737" class="flex items-center gap-2 hover:text-white transition-colors">
-          <Icon name="tabler:phone" class="w-5 h-5" />
+          <Icon name="tabler:phone" class="w-4 h-4 md:w-5 md:h-5" />
           <span>+34 613 13 97 37</span>
         </a>
         <a href="mailto:contacto@tictacdicta.es" class="flex items-center gap-2 hover:text-white transition-colors">
-          <Icon name="tabler:mail" class="w-5 h-5" />
+          <Icon name="tabler:mail" class="w-4 h-4 md:w-5 md:h-5" />
           <span>contacto@tictacdicta.es</span>
         </a>
       </div>
@@ -653,11 +652,11 @@ const modules = [
   <!-- ============================================ -->
   <!-- STICKY CTA MOBILE -->
   <!-- ============================================ -->
-  <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-slate-200 p-4 md:hidden z-50 shadow-2xl">
+  <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-slate-200 p-3 md:hidden z-50 shadow-2xl">
     <a href="https://wa.me/34613139737?text=Hola%21%20Quiero%20probar%20tictacdicta%20GRATIS" 
-       class="wa-contact flex items-center justify-center gap-2 w-full py-4 text-lg font-black rounded-xl bg-gradient-to-r from-lime-500 to-green-500 text-slate-900 shadow-lg">
-      <Icon class="w-6 h-6" name="ic:baseline-whatsapp" />
-      PRUEBA GRATIS 30 DÍAS
+       class="wa-contact flex items-center justify-center gap-2 w-full py-3 text-base font-black rounded-xl bg-gradient-to-r from-lime-500 to-green-500 text-slate-900 shadow-lg">
+      <Icon class="w-5 h-5" name="ic:baseline-whatsapp" />
+      PRUEBA GRATIS
     </a>
   </div>
 
